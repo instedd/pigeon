@@ -1,0 +1,60 @@
+callcentric:
+  display_name: 'Callcentric channel'
+  fields:
+    - name: username
+      type: string
+    - name: password
+      type: password
+    - name: number
+      type: string
+
+custom:
+  display_name: 'Custom channel'
+  fields:
+    - name: dial_string
+      type: string
+
+sip:
+  display_name: 'SIP channel'
+  fields:
+    - name: username
+      type: string
+    - name: password
+      type: password
+    - name: number
+      type: string
+    - name: limit
+      type: string
+    - name: domain
+      type: string
+    - name: direction
+      type: enum
+      options:
+        - value: incoming
+          display: Incoming
+        - value: outgoing
+          display: Outgoing
+        - value: both
+          display: Both directions
+    - name: register
+      type: boolean
+
+skype:
+  display_name: 'Skype channel'
+  fields:
+    - name: username
+      type: string
+    - name: password
+      type: password
+    - name: number
+      type: string
+
+voxeo:
+  display_name: 'Voxeo channel'
+  fields:
+    - name: token
+      type: string
+    - name: url
+      type: string
+
+
