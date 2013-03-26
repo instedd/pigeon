@@ -6,6 +6,11 @@ module Pigeon
       "Pigeon::#{type.to_s.capitalize}ChannelKind".constantize
     end
 
+    def self.from_type_and_kind(type_kind)
+      type, kind = type_kind.split('/')
+      from_type(type).from_kind(kind)
+    end
+
     def form
       @form ||= build_form
     end
