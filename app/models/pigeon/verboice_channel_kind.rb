@@ -8,6 +8,10 @@ module Pigeon
       (@@kinds ||= load_channel_kinds)[kind]
     end
 
+    def type
+      :verboice
+    end
+
     def self.load_channel_kinds
       Hash[PigeonConfig::VerboiceChannelKinds.map do |name, data|
         kind = VerboiceChannelKind.new(name: name, 
@@ -19,7 +23,7 @@ module Pigeon
 
     def build_channel(attributes = {})
       channel = VerboiceChannel.new name
-      channel.update_attributes(form.default_values.merge(attributes))
+      channel.assign_attributes(form.default_values.merge(attributes))
       channel
     end
   end

@@ -8,7 +8,15 @@ module Pigeon
 
     def self.from_type_and_kind(type_kind)
       type, kind = type_kind.split('/')
-      from_type(type).from_kind(kind)
+      begin from_type(type).from_kind(kind) rescue nil end
+    end
+
+    def type_and_kind
+      "#{self.type.to_s}/#{self.name}"
+    end
+
+    def kind
+      name
     end
 
     def form

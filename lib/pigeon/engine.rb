@@ -6,6 +6,7 @@ module Pigeon
       ActiveSupport.on_load :action_controller do
         helper Pigeon::TagHelper
         helper Pigeon::FormHelper
+        helper Pigeon::TextHelper
       end
     end  
 

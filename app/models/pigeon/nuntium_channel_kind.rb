@@ -10,6 +10,10 @@ module Pigeon
       (@@kinds ||= load_channel_kinds)[kind]
     end
 
+    def type
+      :nuntium
+    end
+
     def self.load_channel_kinds
       Hash[PigeonConfig::NuntiumChannelKinds.map do |name, data|
         kind = NuntiumChannelKind.new(name: name, 
@@ -23,7 +27,7 @@ module Pigeon
     def build_channel(attributes = {})
       channel = NuntiumChannel.new name
       channel.protocol = protocol
-      channel.update_attributes(form.default_values.merge(attributes))
+      channel.assign_attributes(form.default_values.merge(attributes))
       channel
     end
 

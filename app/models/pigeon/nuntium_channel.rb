@@ -19,7 +19,7 @@ module Pigeon
       if ["incoming", "outgoing", "bidirectional"].include? dir
         @direction = dir
       else
-        raise TypeError
+        raise TypeError, "invalid direction #{dir}"
       end
     end
 
@@ -35,7 +35,7 @@ module Pigeon
       end
     end
 
-    def update_attributes(attributes)
+    def assign_attributes(attributes)
       attributes.each do |attr, value|
         if AttributesAsStrings.include? attr.to_s
           self.send("#{attr.to_s}=", value)
@@ -83,14 +83,21 @@ module Pigeon
       from_data nuntium.channel(name)
     end
 
-    def update_from_data(data)
+    def assign_from_data(data)
       @new_channel = false
 
       Attributes.each do |attr|
         self.send("#{attr.to_s}=", data[attr])
       end
-      update_attributes(data[:configuration])
+      assign_attributes(data[:configuration])
       self
+    end
+
+    def filtered_configuration
+      form = channel_kind.form
+      configuration.reject { |k,v|
+        form[k].type == :password && v.blank?
+      }
     end
 
     private
@@ -114,12 +121,12 @@ module Pigeon
         direction: direction, 
         enabled: enabled,
         priority: priority, 
-        configuration: configuration 
+        configuration: filtered_configuration
       }
     end
 
     def self.from_data(data)
-      NuntiumChannel.new(data[:kind]).update_from_data(data)
+      NuntiumChannel.new(data[:kind]).assign_from_data(data)
     end
   end
 end
