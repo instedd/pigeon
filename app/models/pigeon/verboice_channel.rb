@@ -1,10 +1,33 @@
 module Pigeon
   class VerboiceChannel < Channel
-    attr_accessor :call_flow
 
-    def channel_type
-      :message
+    class << self
+      def type() :verboice end
+
+      def schemas
+        @schemas ||= load_schemas
+      end
+
+      def list
+        verboice.list_channels
+      end
+
+      def find(*arguments)
+        raise NotImplementedError
+      end
+
+      def verboice
+        @verboice ||= Verboice.from_config
+      end
+
+    private
+
+      def load_schemas
+        Pigeon::ChannelSchema.list_from_hash(:verboice, PigeonConfig::VerboiceChannelKinds)
+      end
     end
+
+    channel_accessor :call_flow
 
     def save
       raise NotImplementedError
@@ -12,24 +35,6 @@ module Pigeon
 
     def destroy
       raise NotImplementedError
-    end
-
-    def self.list
-      verboice.list_channels
-    end
-
-    def self.find(name)
-      raise NotImplementedError
-    end
-
-    private
-
-    def self.verboice
-      Verboice.from_config
-    end
-
-    def verboice
-      @verboice ||= Verboice.from_config
     end
   end
 end

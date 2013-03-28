@@ -1,64 +1,153 @@
 module Pigeon
   class Channel
+    extend ActiveModel::Naming
     extend ActiveModel::Translation
+    include ActiveModel::Conversion
+    include ActiveModel::Validations
 
-    attr_reader :kind, :errors
-    attr_accessor :name
+    class << self
+      def type() nil end
 
-    def self.from_type(type)
-      "Pigeon::#{type.to_s.capitalize}Channel".constantize
-    end
-
-    def channel_kind
-      ChannelKind.from_type(channel_type).from_kind(kind)
-    end
-
-    def initialize(kind)
-      @kind = kind
-      @name = randomize_name
-      @new_channel = true
-      @errors = ActiveModel::Errors.new(self)
-    end
-
-    def valid?
-      @errors.empty?
-    end
-
-    def new_channel?
-      @new_channel
-    end
-
-    def get_attribute(name)
-      if self.respond_to?(name)
-        self.send(name)
-      else
-        nil
+      def schemas
+        []
       end
-    end
 
-    def assign_attributes(attributes)
-      attributes.each do |attr, value|
-        if self.respond_to?("#{attr.to_s}=")
-          self.send("#{attr.to_s}=", value)
+      def find_schema(kind)
+        schemas.find { |s| s.kind == kind }
+      end
+
+      def channel_accessor(*names)
+        options = names.extract_options!
+
+        names.each do |name|
+          reader, line = "def #{name}; attributes['#{name}']; end", __LINE__
+          writer, line = "def #{name}=(value); attributes['#{name}'] = value; end", __LINE__
+
+          class_eval reader, __FILE__, line unless options[:instance_reader] == false
+          class_eval writer, __FILE__, line unless options[:instance_writer] == false
         end
       end
-    end
 
-    def save
-      false
-    end
+      def list
+        raise NotImplementedError
+      end
 
-    def save!
-      raise ActiveRecord::RecordInvalid, self unless save
-    end
+      def find(*arguments)
+        scope = arguments.slice!(0)
+        options = arguments.slice!(0) || {}
 
-    def destroy
-    end
+        case scope
+        when :all
+          list.map { |id| find_single(id) }
+        when :first
+          find_single(list.first)
+        when :last
+          find_single(list.first)
+        else
+          find_single(scope)
+        end
+      end
+
+      def all()   find(:all)   end
+      def first() find(:first) end
+      def last()  find(:last)  end
 
     private
 
-    def randomize_name
-      "#{@kind}-#{Time.now.strftime('%Y%m%d%H%M%S%3N')}"
+      def find_single(id)
+        raise NotImplementedError
+      end
+    end
+
+    attr_accessor :attributes, :schema
+
+    channel_accessor :name, :kind
+
+    validates_presence_of :name, :kind
+
+    def type
+      self.class.type
+    end
+
+    def initialize(attrs = {}, persisted = false)
+      @attributes = {}.with_indifferent_access
+      @persisted = persisted
+      @destroyed = false
+      
+      schema = self.class.find_schema(attrs[:kind])
+      load_default_values
+      load_schema_defaults
+      
+      load(attrs)
+    end
+
+    def read_attribute_for_validation(key)
+      attributes[key]
+    end
+
+    def persisted?
+      @persisted
+    end
+
+    def new_record?
+      !persisted?
+    end
+
+    def destroyed?
+      @destroyed
+    end
+
+    alias :id :name
+    alias :id= :name=
+
+    def known_attributes
+      schema.try(:known_attributes) || []
+    end
+
+    def method_missing(method_symbol, *arguments)
+      method_name = method_symbol.to_s
+
+      if method_name =~ /(=|\?)$/
+        case $1
+        when "="
+          attributes[$`] = arguments.first
+        when "?"
+          attributes[$`]
+        end  
+      else 
+        return attributes[method_name] if attributes.include?(method_name)
+        # not set right now but we know about it
+        return nil if known_attributes.include?(method_name)
+        super
+      end  
+    end  
+
+    def generate_name
+      "#{kind || 'channel'}-#{Time.now.strftime('%Y%m%d%H%M%S%3N')}"
+    end
+
+  protected
+
+    def load_default_values
+    end
+
+    def load_schema_defaults
+      return if schema.nil?
+
+      load schema.default_values
+    end
+
+  private
+
+    def load(attributes)
+      (attributes || {}).each do |key, value|
+        @attributes[key.to_s] = case value
+                                  when Hash
+                                    (@attributes[key.to_s] || {}).merge(value)
+                                  else
+                                    value.duplicable? ? value.dup : value
+                                  end
+      end
     end
   end
 end

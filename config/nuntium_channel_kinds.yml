@@ -1,180 +1,231 @@
 clickatell:
-  display_name: 'Clickatell channel'
-  protocol: sms
-  fields:
-    - name: username
-    - name: password
-      type: password
-    - name: api_id
-      label: API ID
-    - name: from
-    - name: network
-      type: enum
-      options:
-        - value: '61'
-          display: '+61'
-        - value: '44a'
-          display: '+44 [A]'
-        - value: '46'
-          display: '+46'
-        - value: '49'
-          display: '+49'
-        - value: '45'
-          display: '+45'
-        - value: '44b'
-          display: '+44 [B]'
-        - value: 'usa'
-          display: 'USA shortcode'
-    - name: concatenation
-    - name: incoming_password
-      type: password
-      label: Incoming password (to use for the callback URLs)
+  humanized_name: 'Clickatell channel'
+  attributes:
+    - name: protocol
+      value: sms
+      user: false
+    - name: configuration
+      attributes:
+        - name: username
+        - name: password
+          type: password
+        - name: api_id
+          label: API ID
+        - name: from
+        - name: network
+          type: enum
+          options:
+            - value: '61'
+              display: '+61'
+            - value: '44a'
+              display: '+44 [A]'
+            - value: '46'
+              display: '+46'
+            - value: '49'
+              display: '+49'
+            - value: '45'
+              display: '+45'
+            - value: '44b'
+              display: '+44 [B]'
+            - value: 'usa'
+              display: 'USA shortcode'
+        - name: concatenation
+        - name: incoming_password
+          type: password
+          label: Incoming password (to use for the callback URLs)
 
 dtac:
-  display_name: 'DTAC channel'
-  protocol: sms
-  fields:
-    - name: username
-    - name: password
-      type: password
+  humanized_name: 'DTAC channel'
+  attributes:
+    - name: protocol
+      value: sms
+      user: false
+    - name: configuration
+      attributes:
+        - name: username
+        - name: password
+          type: password
 
 ipop:
-  display_name: 'I-POP channel'
-  protocol: sms
-  fields:
-    - name: url
-      label: URL
-    - name: username
-      label: Username (optional)
-    - name: password
-      type: password
-      label: Password (optional)
-    - name: cid
-      label: Connection ID (cid)
-    - name: bid
-      label: Billing Level (bid)
+  humanized_name: 'I-POP channel'
+  attributes:
+    - name: protocol
+      value: sms
+      user: false
+    - name: configuration
+      attributes:
+        - name: url
+          label: URL
+        - name: username
+          label: Username (optional)
+        - name: password
+          type: password
+          label: Password (optional)
+        - name: cid
+          label: Connection ID (cid)
+        - name: bid
+          label: Billing Level (bid)
 
 msn:
-  display_name: 'MSN channel'
-  protocol: msn
-  fields:
-    - name: email
-    - name: password
-      type: password
+  humanized_name: 'MSN channel'
+  attributes:
+    - name: protocol
+      value: msn
+      user: false
+    - name: configuration
+      attributes:
+        - name: email
+        - name: password
+          type: password
 
 isms:
-  display_name: 'Multimodem iSms channel'
-  protocol: sms
-  fields:
-    - name: host
-    - name: port
-      type: integer
-      default_value: 81
-    - name: user
-    - name: password
-      type: password
-    - name: time_zone
-      type: timezone
+  humanized_name: 'Multimodem iSms channel'
+  attributes:
+    - name: protocol
+      value: sms
+      user: false
+    - name: configuration
+      attributes:
+        - name: host
+        - name: port
+          type: integer
+          default_value: 81
+        - name: user
+        - name: password
+          type: password
+        - name: time_zone
+          type: timezone
 
 pop3:
-  display_name: 'POP3 channel'
-  protocol: mailto
-  fields:
-    - name: host
-    - name: port
-      type: integer
-    - name: user
-    - name: password
-      type: password
-    - name: use_ssl
-      type: boolean
-      label: "Use SSL?"
-    - name: remove_quoted_text_or_text_after_first_empty_line
-      type: boolean
+  humanized_name: 'POP3 channel'
+  attributes:
+    - name: protocol
+      value: mailto
+      user: false
+    - name: configuration
+      attributes:
+        - name: host
+        - name: port
+          type: integer
+        - name: user
+        - name: password
+          type: password
+        - name: use_ssl
+          type: boolean
+          label: "Use SSL?"
+        - name: remove_quoted_text_or_text_after_first_empty_line
+          type: boolean
 
 qst:
-  display_name: 'QST client channel'
-  protocol: sms
-  fields:
-    - name: url
-      label: URL
-    - name: user
-    - name: password
-      type: password
+  humanized_name: 'QST client channel'
+  attributes:
+    - name: protocol
+      value: sms
+      user: false
+    - name: configuration
+      attributes:
+        - name: url
+          label: URL
+        - name: user
+        - name: password
+          type: password
 
 qst-server:
-  display_name: 'QST server (local gateway) channel'
-  protocol: sms
-  fields:
-    - name: ticket_code
-    - name: ticket_message
-    - name: password
-      type: password
-    - name: password_confirmation
-      type: password
+  humanized_name: 'QST server (local gateway) channel'
+  attributes:
+    - name: protocol
+      value: sms
+      user: false
+    - name: configuration
+      attributes:
+        - name: ticket_code
+        - name: ticket_message
+        - name: password
+          type: password
+        - name: password_confirmation
+          type: password
 
 smpp:
-  display_name: 'SMPP channel'
-  protocol: sms
-  fields:
-    - name: host
-    - name: port
-      type: integer
-    - name: user
-    - name: password
-      type: password
-    - name: system_type
-      default_value: vma
-    - name: source_ton
-    - name: source_npi
-    - name: destination_ton
-    - name: destination_npi
-    - name: service_type
+  humanized_name: 'SMPP channel'
+  attributes:
+    - name: protocol
+      value: sms
+      user: false
+    - name: configuration
+      attributes:
+        - name: host
+        - name: port
+          type: integer
+        - name: user
+        - name: password
+          type: password
+        - name: system_type
+          default_value: vma
+        - name: source_ton
+        - name: source_npi
+        - name: destination_ton
+        - name: destination_npi
+        - name: service_type
 
 smtp:
-  display_name: 'SMTP channel'
-  protocol: mailto
-  fields:
-    - name: host
-    - name: port
-      type: integer
-    - name: user
-    - name: password
-      type: password
-    - name: use_ssl
-      type: boolean
-      label: "Use SSL?"
+  humanized_name: 'SMTP channel'
+  attributes:
+    - name: protocol
+      value: mailto
+      user: false
+    - name: configuration
+      attributes:
+        - name: host
+        - name: port
+          type: integer
+        - name: user
+        - name: password
+          type: password
+        - name: use_ssl
+          type: boolean
+          label: "Use SSL?"
 
 twilio:
-  display_name: 'Twilio channel'
-  protocol: sms
-  fields:
-    - name: account_sid
-    - name: auth_token
-    - name: from
-    - name: incoming_password
-      type: password
-      label: Incoming password (to use for the callback URLs)
+  humanized_name: 'Twilio channel'
+  attributes:
+    - name: protocol
+      value: sms
+      user: false
+    - name: configuration
+      attributes:
+        - name: account_sid
+        - name: auth_token
+        - name: from
+        - name: incoming_password
+          type: password
+          label: Incoming password (to use for the callback URLs)
 
 twitter:
-  display_name: 'Twitter channel'
-  protocol: twitter
+  humanized_name: 'Twitter channel'
+  attributes:
+    - name: protocol
+      value: twitter
+      user: false
 
 xmpp:
-  display_name: 'XMPP channel'
-  protocol: xmpp
-  fields:
-    - name: user
-    - name: domain
-    - name: password
-      type: password
-    - name: server
-    - name: port
-      type: integer
-      default_value: 5222
-    - name: resource
-    - name: status
-    - name: send_offline
-      type: boolean
-      label: Send if user is offline
+  humanized_name: 'XMPP channel'
+  attributes:
+    - name: protocol
+      value: xmpp
+      user: false
+    - name: configuration
+      attributes:
+        - name: user
+        - name: domain
+        - name: password
+          type: password
+        - name: server
+        - name: port
+          type: integer
+          default_value: 5222
+        - name: resource
+        - name: status
+        - name: send_offline
+          type: boolean
+          label: Send if user is offline
 

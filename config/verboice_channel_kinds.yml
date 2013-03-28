@@ -1,6 +1,6 @@
 callcentric:
-  display_name: 'Callcentric channel'
-  fields:
+  humanized_name: 'Callcentric channel'
+  attributes:
     - name: username
       type: string
     - name: password
@@ -9,14 +9,14 @@ callcentric:
       type: string
 
 custom:
-  display_name: 'Custom channel'
-  fields:
+  humanized_name: 'Custom channel'
+  attributes:
     - name: dial_string
       type: string
 
 sip:
-  display_name: 'SIP channel'
-  fields:
+  humanized_name: 'SIP channel'
+  attributes:
     - name: username
       type: string
     - name: password
@@ -40,8 +40,8 @@ sip:
       type: boolean
 
 skype:
-  display_name: 'Skype channel'
-  fields:
+  humanized_name: 'Skype channel'
+  attributes:
     - name: username
       type: string
     - name: password
@@ -50,8 +50,8 @@ skype:
       type: string
 
 voxeo:
-  display_name: 'Voxeo channel'
-  fields:
+  humanized_name: 'Voxeo channel'
+  attributes:
     - name: token
       type: string
     - name: url
