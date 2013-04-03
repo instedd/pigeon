@@ -1,0 +1,21 @@
+foobar:
+  humanized_name: 'Foobar Channel'
+  attributes:
+    - name: protocol
+      value: foobar
+      user: false
+    - name: ticket_code
+      type: integer
+      user: true
+    - name: configuration
+      attributes:
+        - name: user
+        - name: password
+          type: password
+        - name: port
+          type: integer
+          value: 5222
+        - name: send_offline
+          type: boolean
+          label: Send if user is offline
+

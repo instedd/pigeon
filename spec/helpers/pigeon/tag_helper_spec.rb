@@ -12,6 +12,25 @@ require 'spec_helper'
 # end
 module Pigeon
   describe TagHelper do
-    pending "add some examples to (or delete) #{__FILE__}"
+    describe "pigeon_schema_options" do
+      before(:each) do
+        @schemas = NuntiumChannel.schemas
+      end
+
+      it "returns a list of schemas appropiate for options_for_select" do
+        options = helper.pigeon_schema_options(@schemas)
+        options.count.should eq(@schemas.count)
+        options.all? { |o| 
+          o.respond_to?(:first) && o.respond_to?(:last) 
+        }.should be_true
+      end
+
+      it "prefixes values with given string" do
+        options = helper.pigeon_schema_options(@schemas, 'foo/')
+        options.all? { |o|
+          o.last.starts_with? 'foo/'
+        }.should be_true
+      end
+    end
   end
 end

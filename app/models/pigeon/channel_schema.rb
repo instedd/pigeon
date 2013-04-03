@@ -15,7 +15,7 @@ module Pigeon
 
     attr_reader :type, :kind, :humanized_name, :attribute_data, :layout_data
 
-    def initialize(type, kind, humanized_name = nil, attributes = [], layout = [])
+    def initialize(type, kind, humanized_name = nil, attributes = [], layout = nil)
       @type = type
       @kind = kind
       @humanized_name = humanized_name || kind
@@ -32,33 +32,54 @@ module Pigeon
     end
 
     def user_attributes
-      filtered_map_attributes(attributes) do |attr, prefixed_name|
+      flattened_map_filter(attributes) do |attr, prefixed_name|
         attr.user_editable ? prefixed_name : nil
       end
     end
 
     def default_values
-      Hash[filtered_map_attributes(attributes) do |attr, prefixed_name|
-        attr.default_value.nil? ? nil : [prefixed_name, attr.default_value]
-      end]
+      recursive_map_filter(attributes, &:default_value)
     end
 
     def layout
-      @layout ||= process_layout(@layout_data)
+      @layout ||= @layout_data ? process_layout(@layout_data) : default_layout
+    end
+
+    def type_kind
+      "#{type}/#{kind}"
+    end
+
+    def default_layout
+      [".pigeon_layout"] + user_attributes.map do |attr_name|
+        ["@f", attr_name]
+      end
     end
 
   private
 
-    def filtered_map_attributes(attributes, prefix = '', &block)
+    # recursive map-filter of the channel schema attributes
+    def flattened_map_filter(attributes, prefix = '', &block)
       attributes.inject([]) do |result, (name, attr)|
         name = "#{prefix}#{name}"
         if attr.is_a? Hash
-          value = filtered_map_attributes(attr, "#{name}/", &block)
+          value = flattened_map_filter(attr, "#{name}/", &block)
           result + value
         else
-          value = block.call(attr, name)
+          value = yield(attr, name)
           result + [value].reject(&:nil?)
         end
+      end
+    end
+
+    def recursive_map_filter(attributes, &block)
+      attributes.inject({}) do |result, (name, attr)|
+        if attr.is_a? Hash
+          value = recursive_map_filter(attr, &block)
+        else
+          value = yield(attr)
+        end
+        result[name] = value if value.present?
+        result
       end
     end
 
@@ -66,6 +87,7 @@ module Pigeon
       Hash[attributes.map do |attr|
         name = attr["name"]
         if attr["attributes"].present?
+          # recursively process nested attributes
           attribute = process_attributes(attr["attributes"])
         else
           type = attr["type"] || "string"

@@ -25,6 +25,29 @@ module Pigeon
         @channel.priority.should eq(100)
       end
     end
+
+    it "should load static schemas" do
+      NuntiumChannel.schemas.should_not be_empty
+      NuntiumChannel.find_schema('pop3').should_not be_nil
+    end
+
+    describe "when initialized with kind" do
+      before(:each) do
+        @channel = NuntiumChannel.new kind: 'xmpp'
+      end
+
+      it "should find schema" do
+        @channel.schema.should_not be_nil
+      end
+
+      it "should set schema's default values" do
+        @channel.protocol.should eq('xmpp')
+      end
+
+      it "should set nested default schema values" do
+        @channel.configuration['port'].should eq(5222)
+      end
+    end
   end
 end
 

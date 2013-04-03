@@ -12,6 +12,14 @@ module Pigeon
         []
       end
 
+      def find_type(type)
+        begin 
+          "Pigeon::#{type.to_s.capitalize}Channel".constantize
+        rescue
+          nil
+        end
+      end
+
       def find_schema(kind)
         schemas.find { |s| s.kind == kind }
       end
@@ -74,7 +82,7 @@ module Pigeon
       @persisted = persisted
       @destroyed = false
       
-      schema = self.class.find_schema(attrs[:kind])
+      @schema = self.class.find_schema(attrs[:kind])
       load_default_values
       load_schema_defaults
       
@@ -132,9 +140,7 @@ module Pigeon
     end
 
     def load_schema_defaults
-      return if schema.nil?
-
-      load schema.default_values
+      load schema.default_values unless schema.nil?
     end
 
   private

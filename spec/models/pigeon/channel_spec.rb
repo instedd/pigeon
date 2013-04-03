@@ -96,6 +96,20 @@ module Pigeon
         @channel.should_not be_valid
       end
     end
+
+    describe "types and schemas" do
+      it "should find defined types" do
+        %w(nuntium verboice).each do |type|
+          Channel.find_type(type).should_not be_nil
+          Channel.find_type(type.to_sym).should_not be_nil
+          Channel.find_type(type).type.to_s.should eq(type)
+        end
+      end
+
+      it "should return nil for undefined types" do
+        Channel.find_type('foobar').should be_nil
+      end
+    end
   end
 end
 
