@@ -46,6 +46,16 @@ module Pigeon
           @channel.send(k.to_sym).should eq(v)
         end
       end
+      
+      it "should expose attributes through []" do
+        @channel['kind'].should eq(@attributes[:kind])
+        @channel['name'].should eq(@attributes[:name])
+      end
+
+      it "should allow writing attributes through []" do
+        @channel['other'] = false
+        @channel.other.should be_false
+      end
     end
 
     describe "with nested attributes" do
@@ -108,6 +118,26 @@ module Pigeon
 
       it "should return nil for undefined types" do
         Channel.find_type('foobar').should be_nil
+      end
+    end
+
+    describe "read and write attributes" do
+      before(:each) do
+        @channel = Channel.new foo: 42, bar: { baz: 1, pepe: 'hi' }
+      end
+
+      it "should read shallow and nested attributes" do
+        @channel.read_attribute('foo').should eq(@channel.foo)
+        @channel.read_attribute('bar[baz]').should eq(@channel.bar['baz'])
+        @channel.read_attribute('bar[pepe]').should eq(@channel.bar['pepe'])
+      end
+
+      it "should write shallow and nested attributes" do
+        @channel.write_attribute('foo', 33)
+        @channel.foo.should eq(33)
+
+        @channel.write_attribute('bar[pepe]', 'bye')
+        @channel.bar['pepe'].should eq('bye')
       end
     end
   end

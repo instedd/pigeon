@@ -134,7 +134,35 @@ module Pigeon
       "#{kind || 'channel'}-#{Time.now.strftime('%Y%m%d%H%M%S%3N')}"
     end
 
+    def [](key)
+      attributes[key]
+    end
+
+    def []=(key, value)
+      attributes[key] = value
+    end
+
+    def read_attribute(attr_name)
+      hash, key = find_attr_ref_recursive(attr_name, attributes)
+      hash[key]
+    end
+
+    def write_attribute(attr_name, value)
+      hash, key = find_attr_ref_recursive(attr_name, attributes)
+      hash[key] = value
+    end
+
   protected
+
+    def find_attr_ref_recursive(name, attributes)
+      m = name.match(/\A(\w+)(\[(\w+)\](.*))?\Z/)
+      attr_name = m[1]
+      if !m[3].nil? && !attributes.nil?
+        find_attr_ref_recursive(m[3] + m[4], attributes[attr_name])
+      else
+        [attributes, attr_name]
+      end
+    end
 
     def load_default_values
     end

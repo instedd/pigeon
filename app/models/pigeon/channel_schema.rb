@@ -32,8 +32,8 @@ module Pigeon
     end
 
     def user_attributes
-      flattened_map_filter(attributes) do |attr, prefixed_name|
-        attr.user_editable ? prefixed_name : nil
+      flattened_map_filter(attributes) do |attr|
+        attr.user_editable ? attr.scoped_name : nil
       end
     end
 
@@ -55,17 +55,31 @@ module Pigeon
       end
     end
 
+    def find_attribute(name)
+      find_attribute_recursive(name, attributes)
+    end
+
   private
 
+    def find_attribute_recursive(name, attributes)
+      m = name.match(/\A(\w+)(\[(\w+)\](.*))?\Z/)
+      attr_name = m[1]
+      found = attributes[attr_name]
+      if !m[3].nil?
+        find_attribute_recursive(m[3] + m[4], found)
+      else
+        found
+      end
+    end
+
     # recursive map-filter of the channel schema attributes
-    def flattened_map_filter(attributes, prefix = '', &block)
+    def flattened_map_filter(attributes, &block)
       attributes.inject([]) do |result, (name, attr)|
-        name = "#{prefix}#{name}"
         if attr.is_a? Hash
-          value = flattened_map_filter(attr, "#{name}/", &block)
+          value = flattened_map_filter(attr, &block)
           result + value
         else
-          value = yield(attr, name)
+          value = yield(attr)
           result + [value].reject(&:nil?)
         end
       end
@@ -83,15 +97,16 @@ module Pigeon
       end
     end
 
-    def process_attributes(attributes)
+    def process_attributes(attributes, scope = nil)
       Hash[attributes.map do |attr|
         name = attr["name"]
         if attr["attributes"].present?
           # recursively process nested attributes
-          attribute = process_attributes(attr["attributes"])
+          attribute = process_attributes(attr["attributes"], NestedAttribute.new(name, scope))
         else
           type = attr["type"] || "string"
           attribute = Pigeon::ChannelAttribute.new(name, type, attr)
+          attribute.scope = scope
         end
         [name, attribute]
       end].with_indifferent_access

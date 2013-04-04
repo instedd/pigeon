@@ -1,6 +1,7 @@
 module Pigeon
-  class ChannelAttribute
-    attr_reader :name, :type, :default_value, :humanized_name, :label, :tooltip, :user_editable, :options
+  class ChannelAttribute < NestedAttribute
+    attr_reader :type, :default_value, :humanized_name, :label, :tooltip, :user_editable, :options
+    attr_writer :scope
 
     def initialize(name, type, options = {})
       raise ArgumentError, "invalid name" unless name.present?

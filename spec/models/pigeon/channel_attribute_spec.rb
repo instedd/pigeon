@@ -43,5 +43,23 @@ module Pigeon
       @attr = ChannelAttribute.new 'foo', :enum
       @attr.options.should_not be_nil
     end
+
+    it "should have a scope" do
+      @attr = ChannelAttribute.new 'foo', :string
+      @attr.should respond_to(:scope)
+      @attr.should respond_to(:scope=)
+    end
+
+    it "should compute its scoped name" do
+      @foo = ChannelAttribute.new 'foo', :string
+      @bar = ChannelAttribute.new 'bar', :string
+      
+      @bar.scoped_name.should eq('bar')
+      @bar.scoped_name('bling').should eq('bling[bar]')
+
+      @bar.scope = @foo
+      @bar.scoped_name.should eq('foo[bar]')
+      @bar.scoped_name('bling').should eq('bling[foo][bar]')
+    end
   end
 end
