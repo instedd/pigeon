@@ -7,6 +7,7 @@ module Pigeon
         helper Pigeon::TagHelper
         helper Pigeon::TextHelper
         helper Pigeon::LayoutHelper
+        helper Pigeon::ChannelHelper
       end
     end  
 
