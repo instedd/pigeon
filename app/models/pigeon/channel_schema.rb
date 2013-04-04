@@ -91,22 +91,7 @@ module Pigeon
           attribute = process_attributes(attr["attributes"])
         else
           type = attr["type"] || "string"
-          default_value = attr["default_value"] || attr["value"]
-          label = attr["label"]
-          humanized_name = attr["humanized_name"]
-          if label.present?
-            humanized_name ||= label
-          elsif humanized_name.present?
-            label ||= humanized_name
-          else
-            label = name
-            humanized_name = label
-          end
-          tooltip = attr["tooltip"]
-          user_editable = attr["user"].nil? ? true : attr["user"]
-          attribute = Pigeon::ChannelAttribute.new(name, type, default_value, 
-                                                   humanized_name, label, 
-                                                   tooltip, user_editable)
+          attribute = Pigeon::ChannelAttribute.new(name, type, attr)
         end
         [name, attribute]
       end].with_indifferent_access

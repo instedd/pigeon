@@ -1,16 +1,29 @@
 module Pigeon
   class ChannelAttribute
-    attr_reader :name, :type, :default_value, :humanized_name, :label, :tooltip, :user_editable, :validations
+    attr_reader :name, :type, :default_value, :humanized_name, :label, :tooltip, :user_editable, :options
 
-    def initialize(name, type, default_value = nil, humanized_name = nil, label = nil, tooltip = nil, user_editable = true)
-      raise TypeError, "invalid type #{type}" unless self.class.valid_type?(type)
+    def initialize(name, type, options = {})
+      raise ArgumentError, "invalid name" unless name.present?
+      raise ArgumentError, "invalid type #{type}" unless self.class.valid_type?(type)
+
       @name = name
       @type = type.to_sym
-      @default_value = default_value
-      @humanized_name = humanized_name
-      @label = label
-      @tooltip = tooltip
-      @user_editable = user_editable
+      options = options.with_indifferent_access
+
+      @default_value = options['default_value'] || options['value']
+      @humanized_name = options['humanized_name'] || options['display']
+      @label = options['label']
+      if @label.present?
+        @humanized_name ||= @label
+      elsif @humanized_name.present?
+        @label ||= @humanized_name
+      else
+        @label = name.to_s.humanize
+        @humanized_name = @label
+      end
+      @tooltip = options['tooltip']
+      @user_editable = options['user'].nil? ? true : options['user']
+      @options = options['options'] || []
     end
 
     def self.valid_type?(type)

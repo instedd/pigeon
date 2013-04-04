@@ -5,8 +5,8 @@ module Pigeon
     initializer 'pigeon.load_helpers' do |app|
       ActiveSupport.on_load :action_controller do
         helper Pigeon::TagHelper
-        helper Pigeon::FormHelper
         helper Pigeon::TextHelper
+        helper Pigeon::LayoutHelper
       end
     end  
 
