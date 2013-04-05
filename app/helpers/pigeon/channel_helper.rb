@@ -22,10 +22,13 @@ module Pigeon
         select_tag(field_name, time_zone_options_for_select(field_value), options)
       when :boolean
         check_box_tag(field_name, '1', field_value.present?, options)
+      when :hidden
+        hidden_field_tag(field_name, field_value, options)
       end
     end
 
     def pigeon_render_attribute_label(attribute, options = {})
+      return '' if attribute.type == :hidden
       scope = options.delete(:scope)
       field_name = attribute.scoped_name(scope)
       label_tag(field_name, attribute.label, options)
@@ -42,6 +45,8 @@ module Pigeon
         end
         if attribute.type == :boolean
           safe_join([field, label])
+        elsif attribute.type == :hidden
+          field
         else
           safe_join([label, tag(:br), field])
         end

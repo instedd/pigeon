@@ -30,7 +30,7 @@ module Pigeon
     end
 
     def self.valid_type?(type)
-      %w(string boolean password enum integer timezone).include?(type.to_s)
+      %w(string boolean password enum integer timezone hidden).include?(type.to_s)
     end
 
     def self.build_default(name, hint_value = nil)

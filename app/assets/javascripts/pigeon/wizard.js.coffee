@@ -6,9 +6,9 @@ jQuery.fn.pigeonWizard = ->
     $('<div class="pigeon_wizard_navigation"></div>').append(prevButton).append(nextButton).appendTo(wizard)
 
     prevActivePage = (page) ->
-      page.prev('.pigeon_wizard_page')
+      page.prevAll('.pigeon_wizard_page:not(.pigeon_disabled)').first()
     nextActivePage = (page) ->
-      page.next('.pigeon_wizard_page')
+      page.nextAll('.pigeon_wizard_page:not(.pigeon_disabled)').first()
     currentPage = ->
       pages.filter('.active')
 

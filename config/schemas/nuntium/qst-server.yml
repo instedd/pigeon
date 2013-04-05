@@ -4,6 +4,9 @@ qst-server:
     - name: protocol
       value: sms
       user: false
+    - name: phone_type
+      type: hidden
+      user: false
     - name: configuration
       attributes:
         - name: ticket_code
@@ -21,10 +24,14 @@ qst-server:
         - h1
         - Choose your type of mobile phone
       -
+        - "@f"
+        - phone_type
+      -
         - input
         - type: radio
           id: phone_type_android
           name: phone_type
+          value: android
       -
         - label
         - for: phone_type_android
@@ -40,6 +47,7 @@ qst-server:
         - type: radio
           id: phone_type_other
           name: phone_type
+          value: other
       -
         - label
         - for: phone_type_other
@@ -82,5 +90,83 @@ qst-server:
       -
         - "@f"
         - ticket_code
-
+    -
+      - "@page"
+      - id: other_download
+      -
+        - h1
+        - Download and install Nuntium Local Gateway
+      -
+        - p
+        - Nuntium Local Gateway is a program that runs on your local computer
+          and requires a mobile phone to be plugged in. The Gateway will use the
+          plugged-in phone for sending and receiving text messsages.
+      -
+        - p
+        - Download the client corresponding to your operating system and install it.
+      -
+        - ul
+        -
+          - li
+          -
+            - a
+            - href: https://bitbucket.org/instedd/local-gateway/downloads/LocalGateway-MacOS.tar.gz
+            - Download for MacOS 
+        -
+          - li
+          -
+            - a
+            - href: https://bitbucket.org/instedd/local-gateway/downloads/LocalGateway.exe
+            - Download for Windows 
+        -
+          - li
+          -
+            - a
+            - href: https://bitbucket.org/instedd/local-gateway/downloads/LocalGateway.exe
+            - Download for Ubuntu
+      -
+        - p
+        - Alternatively, you can install the Gateway running the following commands:
+      -
+        - pre
+        - |
+          sudo add-apt-repository ppa:instedd/nuntium-local-gateway 
+          sudo apt-get update 
+          sudo apt-get install nuntium-local-gateway 
+    -
+      - "@page"
+      - id: other_setup
+      -
+        - h1
+        - Enter the gateway code from your mobile phone
+      -
+        - img
+        - src: /assets/pigeon/other_local_gateway_preview.png
+      -
+        - p
+        - Copy the code for automated setup from the Nuntium Local Gateway in
+          here to bind your local gateway to this poll.
+      -
+        - "@f"
+        - ticket_code
+    -
+      - script
+      - 
+        - "@raw"
+        - |
+          function enableDisablePages(type, enable) {
+            $('.pigeon_wizard_page').each(function(index, page) {
+              if ($(page).data('id').substr(0, type.length) == type) {
+                $(page)[enable ? 'removeClass' : 'addClass']('pigeon_disabled');
+              }
+            });
+          }
+          $('#phone_type_android').click(function() {
+            enableDisablePages('android', true);
+            enableDisablePages('other', false);
+          });
+          $('#phone_type_other').click(function() {
+            enableDisablePages('android', false);
+            enableDisablePages('other', true);
+          });
 

@@ -16,7 +16,7 @@ module Pigeon
       def render_at_command(v)
         if %w(@f @l @a).include?(v.first)
           render_attribute_command(v)
-        elsif %w(@layout @wizard @page).include?(v.first)
+        elsif %w(@layout @wizard @page @raw).include?(v.first)
           render_layout_command(v)
         else
           super
@@ -68,6 +68,8 @@ module Pigeon
           render ["div.pigeon_wizard_page", options] + content
         when '@layout'
           render ["div.pigeon.pigeon_layout", options] + content
+        when '@raw'
+          content.join.html_safe
         else
           ''
         end
