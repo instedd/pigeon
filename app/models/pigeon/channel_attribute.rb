@@ -49,7 +49,7 @@ module Pigeon
   private
 
     def self.build_scope_recursive(name, scope = nil)
-      m = name.match(/\A(\w+)(\[(\w+)\](.*))?\Z/)
+      m = name.to_s.match(/\A(\w+)(\[(\w+)\](.*))?\Z/)
       attr_name = m[1]
       if m[2].nil?
         [name, scope]

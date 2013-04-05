@@ -65,7 +65,7 @@ module Pigeon
   private
 
     def find_attribute_recursive(name, attributes)
-      m = name.match(/\A(\w+)(\[(\w+)\](.*))?\Z/)
+      m = name.to_s.match(/\A(\w+)(\[(\w+)\](.*))?\Z/)
       attr_name = m[1]
       found = attributes[attr_name]
       if !m[3].nil?

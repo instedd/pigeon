@@ -166,6 +166,27 @@ module Pigeon
         @channel.bar['pepe'].should eq('bye')
       end
     end
+
+    describe "attributes assignment" do
+      before(:each) do
+        @channel = Channel.new foo: 42, bar: { baz: 1, pepe: 'hi' }
+      end
+
+      it "should assign shallow attributes" do
+        @channel.assign_attributes(foo: 123)
+        @channel.foo.should eq(123)
+      end
+
+      it "should assign nested attributes" do
+        @channel.assign_attributes(bar: { baz: 42 })
+        @channel.bar[:baz].should eq(42)
+      end
+
+      it "should assign scoped attributes" do
+        @channel.assign_attributes('bar[baz]' => 42)
+        @channel.bar[:baz].should eq(42)
+      end
+    end
   end
 end
 

@@ -50,10 +50,14 @@ module Pigeon
         true
       rescue Nuntium::Exception => e
         e.properties.each do |name, message|
-          errors.add name, message
+          errors.add "configuration[#{name}]", message
         end
         false
       end
+    end
+
+    def save!
+      save || raise(ChannelInvalid.new(self))
     end
 
     def destroy

@@ -67,7 +67,8 @@ module Pigeon
       end
     end
 
-    attr_accessor :attributes, :schema
+    attr_reader :attributes
+    attr_accessor :schema
 
     channel_accessor :name, :kind
 
@@ -78,6 +79,7 @@ module Pigeon
     end
 
     def initialize(attrs = {}, persisted = false)
+      @errors = ChannelErrors.new(self)
       @attributes = {}.with_indifferent_access
       @persisted = persisted
       @destroyed = false
@@ -137,6 +139,10 @@ module Pigeon
       "#{kind || 'channel'}-#{Time.now.strftime('%Y%m%d%H%M%S%3N')}"
     end
 
+    def generate_name!
+      self.name = generate_name
+    end
+
     def [](key)
       attributes[key]
     end
@@ -155,10 +161,36 @@ module Pigeon
       hash[key] = value
     end
 
+    def assign_attributes(new_attributes)
+      return if new_attributes.blank?
+
+      new_attributes = new_attributes.stringify_keys
+      new_attributes.each do |key, value|
+        if value.is_a?(Hash)
+          write_attribute(key, read_attribute(key).merge(value))
+        else
+          write_attribute(key, value)
+        end
+      end
+    end
+
+    def attributes=(new_attributes)
+      return unless new_attributes.is_a?(Hash)
+      assign_attributes(new_attributes)
+    end
+
+    def human_attribute_name(attr_name, options = {})
+      if schema.nil?
+        super
+      else
+        schema.find_attribute(attr_name).humanized_name || super
+      end
+    end
+
   protected
 
     def find_attr_ref_recursive(name, attributes)
-      m = name.match(/\A(\w+)(\[(\w+)\](.*))?\Z/)
+      m = name.to_s.match(/\A(\w+)(\[(\w+)\](.*))?\Z/)
       attr_name = m[1]
       if !m[3].nil? && !attributes.nil?
         find_attr_ref_recursive(m[3] + m[4], attributes[attr_name])

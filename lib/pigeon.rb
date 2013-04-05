@@ -1,3 +1,4 @@
+require "pigeon/errors"
 require "pigeon/engine"
 
 module Pigeon
