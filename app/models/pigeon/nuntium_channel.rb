@@ -25,7 +25,7 @@ module Pigeon
       end
 
       def load_schemas
-        Pigeon::ChannelSchema.list_from_hash(:nuntium, PigeonConfig::NuntiumChannelKinds)
+        Pigeon::ChannelSchema.list_from_hash(:nuntium, PigeonConfig::NuntiumChannelSchemas)
       end
     end
 

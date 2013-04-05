@@ -130,21 +130,6 @@ qst:
         - name: password
           type: password
 
-qst-server:
-  humanized_name: 'QST server (local gateway) channel'
-  attributes:
-    - name: protocol
-      value: sms
-      user: false
-    - name: configuration
-      attributes:
-        - name: ticket_code
-        - name: ticket_message
-        - name: password
-          type: password
-        - name: password_confirmation
-          type: password
-
 smpp:
   humanized_name: 'SMPP channel'
   attributes:

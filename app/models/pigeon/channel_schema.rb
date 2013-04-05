@@ -2,7 +2,7 @@ module Pigeon
   class ChannelSchema
     class << self
       def from_hash(type, hash)
-        self.new type, hash["kind"], hash["humanized_name"], hash["attributes"]
+        self.new type, hash["kind"], hash["humanized_name"], hash["attributes"], hash["layout"]
       end
 
       def list_from_hash(type, hash)
@@ -53,8 +53,8 @@ module Pigeon
     end
 
     def default_layout
-      [".pigeon_layout"] + user_attributes.map do |attr_name|
-        ["@a", attr_name]
+      [".pigeon.pigeon_layout"] + user_attributes.map do |attr_name|
+        ["@a", attr_name, { :class => "pigeon_attribute" }]
       end
     end
 

@@ -14,6 +14,16 @@ module Pigeon
       end
 
       def render_at_command(v)
+        if %w(@f @l @a).include?(v.first)
+          render_attribute_command(v)
+        elsif %w(@layout @wizard @page).include?(v.first)
+          render_layout_command(v)
+        else
+          super
+        end
+      end
+
+      def render_attribute_command(v)
         name = v[1]
         if v[2].is_a?(Hash)
           options = v[2].with_indifferent_access
@@ -30,7 +40,36 @@ module Pigeon
         when '@a'
           pigeon_render_channel_attribute(channel, name, options)
         else
-          super
+          ''
+        end
+      end
+
+      def render_layout_command(v)
+        if v[1].is_a? Hash
+          options = v[1]
+          content = v.drop(2)
+          options = options.inject({}) do |options, (key, value)|
+            if %w(class style).include?(key.to_s)
+              options[key] = value
+            else
+              options["data-#{key.to_s}"] = value
+            end
+            options
+          end
+        else
+          options = {}
+          content = v.drop(1)
+        end
+
+        case v.first
+        when '@wizard'
+          render ["div.pigeon.pigeon_wizard", options] + content
+        when '@page'
+          render ["div.pigeon_wizard_page", options] + content
+        when '@layout'
+          render ["div.pigeon.pigeon_layout", options] + content
+        else
+          ''
         end
       end
     end

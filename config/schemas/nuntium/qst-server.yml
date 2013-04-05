@@ -1,0 +1,86 @@
+qst-server:
+  humanized_name: 'QST server (local gateway) channel'
+  attributes:
+    - name: protocol
+      value: sms
+      user: false
+    - name: configuration
+      attributes:
+        - name: ticket_code
+        - name: ticket_message
+        - name: password
+          type: password
+        - name: password_confirmation
+          type: password
+  layout:
+    - "@wizard"
+    -
+      - "@page"
+      - id: start
+      -
+        - h1
+        - Choose your type of mobile phone
+      -
+        - input
+        - type: radio
+          id: phone_type_android
+          name: phone_type
+      -
+        - label
+        - for: phone_type_android
+        - Android mobile phone
+      -
+        - p
+        - If you have an Android powered mobile phone, you don't need a
+          computer to set up your gateway. Just download the application and
+          follow the configuration steps, and the phone will be used for sending
+          questions and receiving answers.
+      -
+        - input
+        - type: radio
+          id: phone_type_other
+          name: phone_type
+      -
+        - label
+        - for: phone_type_other
+        - Other mobile phone
+      -
+        - p
+        - If you use another type of mobile phone all you need to do is plug
+          your phone into your computer, download the client, and it will be used
+          for sending and receiving messages.
+    -
+      - "@page"
+      - id: android_download
+      -
+        - h1
+        - Go to Android Market and install Nuntium Local Gateway
+      -
+        - p
+        - Use the following QR code to access the app or use the search engine
+          with the keyword Nuntium
+      -
+        - img
+        - src: /assets/pigeon/android_local_gateway_qr.png
+      -
+        - a
+        - href: market.android.com/details?id=org.instedd.geochat.lgw
+        - market.android.com/details?id=org.instedd.geochat.lgw
+    -
+      - "@page"
+      - id: android_setup
+      -
+        - h1
+        - Enter the gateway code from your mobile phone
+      -
+        - img
+        - src: /assets/pigeon/android_local_gateway_preview.png
+      -
+        - p
+        - Copy the code for automated setup from the Nuntium Local Gateway in
+          here to bind your local gateway to this poll.
+      -
+        - "@f"
+        - ticket_code
+
+

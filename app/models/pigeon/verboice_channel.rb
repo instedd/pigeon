@@ -23,7 +23,7 @@ module Pigeon
     private
 
       def load_schemas
-        Pigeon::ChannelSchema.list_from_hash(:verboice, PigeonConfig::VerboiceChannelKinds)
+        Pigeon::ChannelSchema.list_from_hash(:verboice, PigeonConfig::VerboiceChannelSchemas)
       end
     end
 
