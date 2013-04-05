@@ -5,6 +5,8 @@ module Pigeon
       include ActionView::Helpers::TextHelper
       include ActionView::Helpers::TagHelper
 
+      attr_accessor :delegate
+
       def render(v)
         return '' if v.empty?
 
@@ -16,7 +18,11 @@ module Pigeon
       end
 
       def render_at_command(v)
-        ''
+        if delegate.present? && delegate.respond_to?(:call)
+          delegate.call(v)
+        else
+          ''
+        end
       end
 
       def render_vector(v)

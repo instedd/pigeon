@@ -48,6 +48,24 @@ module Pigeon
       end
     end
 
+    def pigeon_render_channel_attribute_field(channel, attr_name, options = {})
+      value = channel.read_attribute(attr_name)
+      attribute = channel.schema.try(:find_attribute, attr_name)
+      attribute ||= ChannelAttribute.build_default(attr_name, value)
+      field = pigeon_render_attribute_field(attribute, value, options)
+      if channel.errors.include?(attr_name.to_sym)
+        content_tag :div, field, :class => 'field_with_errors'
+      else
+        field
+      end
+    end
+
+    def pigeon_render_channel_attribute_label(channel, attr_name, options = {})
+      attribute = channel.schema.try(:find_attribute, attr_name)
+      attribute ||= ChannelAttribute.build_default(attr_name)
+      pigeon_render_attribute_label(attribute, options)
+    end
+
     def pigeon_render_channel_attribute(channel, attr_name, options = {})
       value = channel.read_attribute(attr_name)
       attribute = channel.schema.try(:find_attribute, attr_name)

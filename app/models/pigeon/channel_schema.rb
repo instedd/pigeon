@@ -54,7 +54,7 @@ module Pigeon
 
     def default_layout
       [".pigeon_layout"] + user_attributes.map do |attr_name|
-        ["@f", attr_name]
+        ["@a", attr_name]
       end
     end
 
