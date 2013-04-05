@@ -3,8 +3,28 @@ require 'spec_helper'
 module Pigeon
   describe ChannelSchema do
     before(:each) do
-      data = YAML::load_file(File.join(TEST_DATA_PATH, 'test_schemas.yml'))
-      @schema = ChannelSchema.from_hash 'nuntium', data['foobar']
+      @schema = ChannelSchema.from_hash 'nuntium', test_schema_hash('foobar')
+    end
+
+    context "on initialization" do
+      it "should validate the presence of type" do
+        lambda do
+          ChannelSchema.new '', 'foo'
+        end.should raise_error(ArgumentError)
+      end
+
+      it "should validate the presence of kind" do
+        lambda do
+          ChannelSchema.new 'foo', ''
+        end.should raise_error(ArgumentError)
+      end
+    end
+
+    describe "from_hash" do
+      it "should set the type and kind" do
+        @schema.type.should eq('nuntium')
+        @schema.kind.should eq('foobar')
+      end
     end
 
     it "should return only first level attributes as known_attributes" do

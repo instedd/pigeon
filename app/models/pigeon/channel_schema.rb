@@ -16,6 +16,9 @@ module Pigeon
     attr_reader :type, :kind, :humanized_name, :attribute_data, :layout_data
 
     def initialize(type, kind, humanized_name = nil, attributes = [], layout = nil)
+      raise ArgumentError, "type cannot be blank" if type.blank?
+      raise ArgumentError, "kind cannot be blank" if kind.blank?
+
       @type = type
       @kind = kind
       @humanized_name = humanized_name || kind

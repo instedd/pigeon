@@ -61,5 +61,38 @@ module Pigeon
       @bar.scoped_name.should eq('foo[bar]')
       @bar.scoped_name('bling').should eq('bling[foo][bar]')
     end
+
+    describe "build_default" do
+      it "should create a valid string attribute by default" do
+        attr = ChannelAttribute.build_default('foo')
+        attr.should_not be_nil
+        attr.should be_a(ChannelAttribute)
+        attr.type.should eq(:string)
+        attr.name.should eq('foo')
+      end
+
+      it "should create a boolean attribute if the value is boolean" do
+        ChannelAttribute.build_default('foo', true).type.should eq(:boolean)
+        ChannelAttribute.build_default('foo', false).type.should eq(:boolean)
+      end
+
+      it "should create an integer attribute if the value is an integer number" do
+        ChannelAttribute.build_default('foo', 10).type.should eq(:integer)
+      end
+
+      it "should build a scope if the attribute name is scoped" do
+        attr = ChannelAttribute.build_default('foo[bar]')
+        attr.name.should eq('bar')
+        attr.scoped_name.should eq('foo[bar]')
+        attr.scoped_name('baz').should eq('baz[foo][bar]')
+      end
+
+      it "should build a recursive scope if the attribute name is deeply nested" do
+        attr = ChannelAttribute.build_default('baz[foo][bar]')
+        attr.name.should eq('bar')
+        attr.scoped_name.should eq('baz[foo][bar]')
+        attr.scoped_name('outer').should eq('outer[baz][foo][bar]')
+      end
+    end
   end
 end

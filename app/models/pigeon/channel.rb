@@ -82,7 +82,10 @@ module Pigeon
       @persisted = persisted
       @destroyed = false
       
-      @schema = self.class.find_schema(attrs[:kind])
+      attrs = attrs.dup
+      @schema = attrs.delete(:schema) || self.class.find_schema(attrs[:kind])
+      attrs[:kind] ||= @schema.kind unless @schema.nil?
+
       load_default_values
       load_schema_defaults
       

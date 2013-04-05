@@ -119,6 +119,32 @@ module Pigeon
       it "should return nil for undefined types" do
         Channel.find_type('foobar').should be_nil
       end
+
+      context "when initialized with a schema" do
+        before(:each) do
+          @schema = ChannelSchema.from_hash 'nuntium', test_schema_hash('foobar')
+        end
+
+        it "should set the schema" do
+          @channel = Channel.new schema: @schema
+          @channel.schema.should be(@schema)
+        end
+
+        it "should set the kind if none is given" do
+          @channel = Channel.new schema: @schema
+          @channel.kind.should eq(@schema.kind)
+        end
+
+        it "should not override kind if one is given" do
+          @channel = Channel.new schema: @schema, kind: 'dont_override'
+          @channel.kind.should eq('dont_override')
+        end
+
+        it "should not set the schema as an attribute" do
+          @channel = Channel.new schema: @schema
+          @channel.attributes[:schema].should be_nil
+        end
+      end
     end
 
     describe "read and write attributes" do
