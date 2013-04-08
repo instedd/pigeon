@@ -60,6 +60,9 @@ module Pigeon
           options = {}
           content = v.drop(1)
         end
+        if %w(@wizard @layout).include?(v.first)
+          options["data-scope"] ||= scope if scope.present?
+        end
 
         case v.first
         when '@wizard'

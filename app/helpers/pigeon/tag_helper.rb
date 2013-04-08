@@ -20,7 +20,7 @@ module Pigeon
     def pigeon_schema_options(schemas, value_prefix = '')
       schemas.map do |c|
         [c.humanized_name, "#{value_prefix}#{c.kind}"]
-      end
+      end.sort_by(&:first)
     end
   end
 end

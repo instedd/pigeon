@@ -30,6 +30,7 @@ module Pigeon
     end
 
     channel_accessor :direction, :priority, :protocol, :enabled, :configuration
+    channel_accessor :restrictions, :at_rules, :ao_rules
 
     validates_numericality_of :priority, only_integer: true
     validates_presence_of :protocol
@@ -40,6 +41,7 @@ module Pigeon
     def save
       return false unless valid?
 
+      puts attributes
       begin
         if !persisted?
           self.class.nuntium.create_channel attributes
@@ -49,6 +51,7 @@ module Pigeon
         end
         true
       rescue Nuntium::Exception => e
+        Rails.logger.warn "error saving Nuntium channel: #{e.message}"
         e.properties.each do |name, message|
           errors.add "configuration[#{name}]", message
         end

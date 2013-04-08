@@ -1,4 +1,4 @@
-qst-server:
+qst_server:
   humanized_name: 'QST server (local gateway) channel'
   attributes:
     - name: protocol
@@ -7,16 +7,16 @@ qst-server:
     - name: phone_type
       type: hidden
       user: false
+    - name: ticket_code
+    - name: ticket_message
+      value: This phone will be used for Nuntium.
     - name: configuration
       attributes:
-        - name: ticket_code
-        - name: ticket_message
         - name: password
-          type: password
-        - name: password_confirmation
           type: password
   layout:
     - "@wizard"
+    - type: qst-server
     -
       - "@page"
       - id: start
@@ -41,7 +41,7 @@ qst-server:
         - If you have an Android powered mobile phone, you don't need a
           computer to set up your gateway. Just download the application and
           follow the configuration steps, and the phone will be used for sending
-          questions and receiving answers.
+          and receiving messages.
       -
         - input
         - type: radio
@@ -60,6 +60,7 @@ qst-server:
     -
       - "@page"
       - id: android_download
+        phone-type: android
       -
         - h1
         - Go to Android Market and install Nuntium Local Gateway
@@ -77,6 +78,7 @@ qst-server:
     -
       - "@page"
       - id: android_setup
+        phone-type: android
       -
         - h1
         - Enter the gateway code from your mobile phone
@@ -93,6 +95,7 @@ qst-server:
     -
       - "@page"
       - id: other_download
+        phone-type: other
       -
         - h1
         - Download and install Nuntium Local Gateway
@@ -136,6 +139,7 @@ qst-server:
     -
       - "@page"
       - id: other_setup
+        phone-type: other
       -
         - h1
         - Enter the gateway code from your mobile phone
@@ -149,24 +153,3 @@ qst-server:
       -
         - "@f"
         - ticket_code
-    -
-      - script
-      - 
-        - "@raw"
-        - |
-          function enableDisablePages(type, enable) {
-            $('.pigeon_wizard_page').each(function(index, page) {
-              if ($(page).data('id').substr(0, type.length) == type) {
-                $(page)[enable ? 'removeClass' : 'addClass']('pigeon_disabled');
-              }
-            });
-          }
-          $('#phone_type_android').click(function() {
-            enableDisablePages('android', true);
-            enableDisablePages('other', false);
-          });
-          $('#phone_type_other').click(function() {
-            enableDisablePages('android', false);
-            enableDisablePages('other', true);
-          });
-

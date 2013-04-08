@@ -1,40 +1,66 @@
-jQuery.fn.pigeonWizard = ->
-  this.each (index, wizard) ->
-    prevButton = $('<button type="button">Prev</button>')
-    nextButton = $('<button type="button">Next</button>')
-    pages = $(wizard).find('.pigeon_wizard_page')
-    $('<div class="pigeon_wizard_navigation"></div>').append(prevButton).append(nextButton).appendTo(wizard)
+#= require pigeon/layout
 
-    prevActivePage = (page) ->
-      page.prevAll('.pigeon_wizard_page:not(.pigeon_disabled)').first()
-    nextActivePage = (page) ->
-      page.nextAll('.pigeon_wizard_page:not(.pigeon_disabled)').first()
-    currentPage = ->
-      pages.filter('.active')
+class PigeonWizard extends PigeonLayout
+  @klasses = {}
 
-    selectPage = (page) ->
-      currentPage().removeClass('active')
-      page.addClass('active')
-      if prevActivePage(page).length > 0
-        prevButton.removeAttr('disabled')
-      else
-        prevButton.attr('disabled', 'disabled')
-      if nextActivePage(page).length > 0
-        nextButton.removeAttr('disabled')
-      else
-        nextButton.attr('disabled', 'disabled')
-      
-    prevButton.click ->
-      current = currentPage()
-      prev = prevActivePage(current)
-      selectPage prev if prev.length > 0
+  @registerClass: (type, klass) ->
+    @klasses[type] = klass
 
-    nextButton.click ->
-      current = currentPage()
-      next = nextActivePage(current)
-      selectPage next if next.length > 0
+  constructor: (@div) ->
+    super
+    @prevButton = $('<button type="button">Prev</button>')
+    @nextButton = $('<button type="button">Next</button>')
+    @pages = $(@div).find('.pigeon_wizard_page')
+    $('<div class="pigeon_wizard_navigation"></div>').append(@prevButton).append(@nextButton).appendTo(@div)
+    @current = -1
+
+    @prevButton.click =>
+      prev = @prevActivePage(@current)
+      @selectPage prev if prev >= 0
+
+    @nextButton.click =>
+      next = @nextActivePage(@current)
+      @selectPage next if next >= 0
               
-    selectPage pages.first()
+  prevActivePage: (index) ->
+    index--
+    while index >= 0 && @pages[index].disabled
+      index--
+    index
+
+  nextActivePage: (index) ->
+    index++
+    while index < @pages.length && @pages[index].disabled
+      index++
+    if index >= @pages.length then -1 else index
+
+  selectPage: (index) ->
+    $(@pages[@current]).removeClass('active') unless @current < 0
+    $(@pages[index]).addClass('active')
+    @current = index
+    if @prevActivePage(index) < 0
+      @prevButton.attr('disabled', 'disabled')
+    else
+      @prevButton.removeAttr('disabled')
+    if @nextActivePage(index) < 0
+      @nextButton.attr('disabled', 'disabled')
+    else
+      @nextButton.removeAttr('disabled')
+    
+  run: ->
+    @selectPage @nextActivePage(-1)
+    
+
+window.PigeonWizard = PigeonWizard
+
+jQuery.fn.pigeonWizard = ->
+  @each (index, wizard) ->
+    type = $(wizard).data('type')
+    klass = PigeonWizard.klasses[type]
+    if klass
+      new klass(wizard).run()
+    else
+      new PigeonWizard(wizard).run()
 
 jQuery ->
   $('.pigeon.pigeon_wizard').pigeonWizard()
