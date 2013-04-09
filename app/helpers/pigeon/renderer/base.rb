@@ -118,6 +118,9 @@ module Pigeon
           end
           options
         end
+        if %w(@layout @wizard).include?(command)
+          options["data-application-name"] ||= Pigeon.config.application_name
+        end
 
         case command
         when '@wizard'

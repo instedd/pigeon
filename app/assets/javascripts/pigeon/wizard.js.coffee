@@ -50,8 +50,25 @@ class PigeonWizard extends PigeonLayout
     else
       @nextButton.removeAttr('disabled')
     
+  selectDefaultPage: ->
+    # If any active page has a field with an error, select that
+    # Otherwise, select the first active page
+    pages_with_errors = $('.field_with_errors').
+      parents('.pigeon_wizard_page').filter -> !@disabled
+    found = -1
+    if pages_with_errors.length > 0
+      pages_with_errors.each (index, page) =>
+        index_in_pages = $.inArray(page, @pages)
+        if found < 0 || (index_in_pages >= 0 && index_in_pages < found)
+          found = index_in_pages
+
+    if found >= 0
+      @selectPage found
+    else
+      @selectPage @nextActivePage(-1)
+
   run: ->
-    @selectPage @nextActivePage(-1)
+    @selectDefaultPage()
     
   generatePassword: (length = 8) ->
     charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

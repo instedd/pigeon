@@ -9,7 +9,6 @@ qst_server:
       user: false
     - name: ticket_code
     - name: ticket_message
-      value: This phone will be used for Nuntium.
     - name: configuration
       attributes:
         - name: password

@@ -37,11 +37,12 @@ class QstServerWizard extends PigeonWizard
     if password_field.val() == ''
       password_field.val(@generatePassword())
 
-    @selectPage 1
+    @attribute('ticket_message').val("This phone will be used for #{@app_name}.")
 
   initPersisted: ->
     $('#qst-reconfigure', @div).click =>
       @initWizard()
+      @selectPage 1
     @navigation.hide()
 
   run: ->
@@ -49,8 +50,7 @@ class QstServerWizard extends PigeonWizard
       @initPersisted()
     else
       @initWizard()
-
-    super
+      @selectDefaultPage()
 
 PigeonWizard.registerClass 'qst-server', QstServerWizard
 
