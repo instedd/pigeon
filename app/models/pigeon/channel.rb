@@ -4,6 +4,7 @@ module Pigeon
     extend ActiveModel::Translation
     include ActiveModel::Conversion
     include ActiveModel::Validations
+    include NestedScopes
 
     class << self
       def type() nil end
@@ -152,13 +153,12 @@ module Pigeon
     end
 
     def read_attribute(attr_name)
-      hash, key = find_attr_ref_recursive(attr_name, attributes)
-      hash[key]
+      find_attr_recursive(attr_name, attributes)
     end
 
     def write_attribute(attr_name, value)
       hash, key = find_attr_ref_recursive(attr_name, attributes)
-      hash[key] = value
+      hash && hash[key] = value
     end
 
     def assign_attributes(new_attributes)
@@ -183,21 +183,12 @@ module Pigeon
       if schema.nil?
         super
       else
-        schema.find_attribute(attr_name).humanized_name || super
+        schema.find_attribute(attr_name).try(:humanized_name) || 
+          self.class.human_attribute_name(attr_name, options)
       end
     end
 
-  protected
-
-    def find_attr_ref_recursive(name, attributes)
-      m = name.to_s.match(/\A(\w+)(\[(\w+)\](.*))?\Z/)
-      attr_name = m[1]
-      if !m[3].nil? && !attributes.nil?
-        find_attr_ref_recursive(m[3] + m[4], attributes[attr_name])
-      else
-        [attributes, attr_name]
-      end
-    end
+  private
 
     def load_default_values
     end
@@ -205,8 +196,6 @@ module Pigeon
     def load_schema_defaults
       load schema.default_values unless schema.nil?
     end
-
-  private
 
     def load(attributes)
       (attributes || {}).each do |key, value|

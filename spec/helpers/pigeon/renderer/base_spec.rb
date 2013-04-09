@@ -27,8 +27,8 @@ module Pigeon
           should eq("<span class=\"foo\">with class foo</span>")
         @renderer.render(["p", { :class => 'bar' }]).
           should eq("<p class=\"bar\"></p>")
-        @renderer.render(["img", { src: 'bar.png' }]).
-          should eq("<img src=\"bar.png\" />")
+        @renderer.render(["hr", { :class => 'bar' }]).
+          should eq("<hr class=\"bar\" />")
       end
 
       it "should recursively render content elements" do
@@ -72,7 +72,7 @@ module Pigeon
       end
 
       it "should not render at-commands by default" do
-        @renderer.render(["@f", "foo"]).should eq('')
+        @renderer.render(["@x", "foo"]).should eq('')
       end
 
       it "should delegate at-command rendering" do
@@ -83,7 +83,7 @@ module Pigeon
         end
 
         @renderer = TestRenderer.new
-        @renderer.render(["@f", "foo"]).should eq('@ffoo')
+        @renderer.render(["@x", "foo"]).should eq('@xfoo')
       end
     end
   end

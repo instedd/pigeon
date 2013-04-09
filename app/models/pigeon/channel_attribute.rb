@@ -4,7 +4,7 @@ module Pigeon
     attr_writer :scope
 
     def initialize(name, type, options = {})
-      raise ArgumentError, "invalid name" unless name.present?
+      raise ArgumentError, "name cannot be blank (scope was '#{options[:scope]}')" unless name.present?
       raise ArgumentError, "invalid type #{type}" unless self.class.valid_type?(type)
 
       @name = name
@@ -48,13 +48,15 @@ module Pigeon
 
   private
 
+    extend NestedScopes
+
     def self.build_scope_recursive(name, scope = nil)
-      m = name.to_s.match(/\A(\w+)(\[(\w+)\](.*))?\Z/)
-      attr_name = m[1]
-      if m[2].nil?
-        [name, scope]
-      else
-        build_scope_recursive(m[3] + m[4], NestedAttribute.new(attr_name, scope))
+      fold_scoped_name(name, [nil, scope]) do |(current, scope), name|
+        if current.nil?
+          [name, scope]
+        else
+          [name, NestedAttribute.new(current, scope)]
+        end
       end
     end
 

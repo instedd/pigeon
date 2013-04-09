@@ -1,5 +1,7 @@
 module Pigeon
   class ChannelSchema
+    include NestedScopes
+
     class << self
       def from_hash(type, hash)
         self.new type, hash["kind"], hash["humanized_name"], hash["attributes"], hash["layout"]
@@ -53,27 +55,16 @@ module Pigeon
     end
 
     def default_layout
-      [".pigeon.pigeon_layout"] + user_attributes.map do |attr_name|
-        ["@a", attr_name, { :class => "pigeon_attribute" }]
+      ["@layout"] + user_attributes.map do |attr_name|
+        ["@attr", attr_name, { :class => "pigeon_attribute" }]
       end
     end
 
     def find_attribute(name)
-      find_attribute_recursive(name, attributes)
+      find_attr_recursive(name, attributes)
     end
 
   private
-
-    def find_attribute_recursive(name, attributes)
-      m = name.to_s.match(/\A(\w+)(\[(\w+)\](.*))?\Z/)
-      attr_name = m[1]
-      found = attributes[attr_name]
-      if !m[3].nil?
-        find_attribute_recursive(m[3] + m[4], found)
-      else
-        found
-      end
-    end
 
     # recursive map-filter of the channel schema attributes
     def flattened_map_filter(attributes, &block)

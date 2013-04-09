@@ -165,6 +165,19 @@ module Pigeon
         @channel.write_attribute('bar[pepe]', 'bye')
         @channel.bar['pepe'].should eq('bye')
       end
+
+      it "should return nil when reading unexisting attribute" do
+        @channel.read_attribute('fnord').should be_nil
+        @channel.read_attribute('fnord[foo]').should be_nil
+        @channel.read_attribute('foo[fnord]').should be_nil
+        @channel.read_attribute('bar[fnord]').should be_nil
+      end
+
+      it "should ignore writes to unexisting attributes" do
+        @channel.write_attribute('fnord[foo]', 5).should be_nil
+        @channel.write_attribute('foo[fnord]', 5).should be_nil
+        @channel.write_attribute('bar[fnord][blah]', 5).should be_nil
+      end
     end
 
     describe "attributes assignment" do

@@ -53,7 +53,13 @@ module Pigeon
       rescue Nuntium::Exception => e
         Rails.logger.warn "error saving Nuntium channel: #{e.message}"
         e.properties.each do |name, message|
-          errors.add "configuration[#{name}]", message
+          if attributes.include? name
+            errors.add name, message
+          elsif configuration.include? name
+            errors.add "configuration[#{name}]", message
+          else
+            errors.add :base, message
+          end
         end
         false
       end

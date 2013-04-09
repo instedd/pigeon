@@ -43,6 +43,18 @@ module Pigeon
           should match(/<input.*name="foo".*type="checkbox"/)
       end
 
+      it "should render an attribute with a forced given type" do
+        @attr = ChannelAttribute.new 'foo', :boolean
+        helper.pigeon_render_attribute_field(@attr, false, { type: 'hidden' }).
+          should have_tag('input', with: { name: 'foo', type: 'hidden'})
+      end
+
+      it "should render an attribute with a forced custom type" do
+        @attr = ChannelAttribute.new 'foo', :string
+        helper.pigeon_render_attribute_field(@attr, false, { type: 'url' }).
+          should have_tag('input', with: { name: 'foo', type: 'url'})
+      end
+
       it "should accept a scope option" do
         @attr = ChannelAttribute.new 'foo', :string
         helper.pigeon_render_attribute_field(@attr, nil, scope: 'bar').

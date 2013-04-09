@@ -18,17 +18,24 @@ qst_server:
     - "@wizard"
     - type: qst-server
     -
+      - "@hidden"
+      - phone_type
+    -
+      - "@hidden"
+      - ticket_message
+    -
+      - "@hidden"
+      - configuration[password]
+    -
       - "@page"
       - id: start
       -
         - h1
         - Choose your type of mobile phone
       -
-        - "@f"
-        - phone_type
-      -
         - input
         - type: radio
+          class: phone_type
           id: phone_type_android
           name: phone_type
           value: android
@@ -45,6 +52,7 @@ qst_server:
       -
         - input
         - type: radio
+          class: phone_type
           id: phone_type_other
           name: phone_type
           value: other
@@ -70,7 +78,7 @@ qst_server:
           with the keyword Nuntium
       -
         - img
-        - src: /assets/pigeon/android_local_gateway_qr.png
+        - src: pigeon/android_local_gateway_qr.png
       -
         - a
         - href: market.android.com/details?id=org.instedd.geochat.lgw
@@ -84,14 +92,15 @@ qst_server:
         - Enter the gateway code from your mobile phone
       -
         - img
-        - src: /assets/pigeon/android_local_gateway_preview.png
+        - src: pigeon/android_local_gateway_preview.png
       -
         - p
         - Copy the code for automated setup from the Nuntium Local Gateway in
           here to bind your local gateway to this poll.
       -
-        - "@f"
+        - "@field"
         - ticket_code
+        - class: ticket_code
     -
       - "@page"
       - id: other_download
@@ -145,11 +154,13 @@ qst_server:
         - Enter the gateway code from your mobile phone
       -
         - img
-        - src: /assets/pigeon/other_local_gateway_preview.png
+        - src: pigeon/other_local_gateway_preview.png
       -
         - p
         - Copy the code for automated setup from the Nuntium Local Gateway in
           here to bind your local gateway to this poll.
       -
-        - "@f"
+        - "@field"
         - ticket_code
+        - class: ticket_code
+        

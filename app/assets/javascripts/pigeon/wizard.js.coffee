@@ -38,11 +38,14 @@ class PigeonWizard extends PigeonLayout
     $(@pages[@current]).removeClass('active') unless @current < 0
     $(@pages[index]).addClass('active')
     @current = index
-    if @prevActivePage(index) < 0
+    @updateNavigation()
+
+  updateNavigation: ->
+    if @prevActivePage(@current) < 0
       @prevButton.attr('disabled', 'disabled')
     else
       @prevButton.removeAttr('disabled')
-    if @nextActivePage(index) < 0
+    if @nextActivePage(@current) < 0
       @nextButton.attr('disabled', 'disabled')
     else
       @nextButton.removeAttr('disabled')

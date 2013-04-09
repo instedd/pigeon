@@ -1,9 +1,12 @@
 module Pigeon
   module Renderer
     class Base
+      include Sprockets::Helpers::RailsHelper
+      include Sprockets::Helpers::IsolatedHelper
       include ActionView::Helpers::OutputSafetyHelper
       include ActionView::Helpers::TextHelper
       include ActionView::Helpers::TagHelper
+      include ActionView::Helpers::AssetTagHelper
 
       attr_accessor :delegate
 
@@ -40,6 +43,12 @@ module Pigeon
             end
           end
           content = content.drop(1)
+        end
+
+        if tag_name.downcase == 'img'
+          if URI(path = options[:src]).relative?
+            options[:src] = image_path(path)
+          end
         end
 
         if content.empty?

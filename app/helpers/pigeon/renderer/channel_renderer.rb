@@ -14,7 +14,7 @@ module Pigeon
       end
 
       def render_at_command(v)
-        if %w(@f @l @a).include?(v.first)
+        if %w(@field @label @attr @hidden).include?(v.first)
           render_attribute_command(v)
         elsif %w(@layout @wizard @page @raw).include?(v.first)
           render_layout_command(v)
@@ -33,12 +33,14 @@ module Pigeon
         options[:scope] = scope if scope.present?
 
         case v.first
-        when '@f'
+        when '@field'
           pigeon_render_channel_attribute_field(channel, name, options)
-        when '@l'
+        when '@label'
           pigeon_render_channel_attribute_label(channel, name, options)
-        when '@a'
+        when '@attr'
           pigeon_render_channel_attribute(channel, name, options)
+        when '@hidden'
+          pigeon_render_channel_attribute_field(channel, name, { :type => :hidden }.merge(options))
         else
           ''
         end

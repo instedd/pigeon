@@ -8,19 +8,19 @@ module Pigeon
         @renderer = ChannelRenderer.new @channel
       end
 
-      it "should handle @f commands" do
-        @renderer.render(['@f', 'foo']).should have_tag('input', with: {
+      it "should handle @field commands" do
+        @renderer.render(['@field', 'foo']).should have_tag('input', with: {
           name: 'foo', value: '42'
         })
       end
 
-      it "should handle @l commands" do
-        @renderer.render(['@l', 'foo']).should have_tag('label', with: {
+      it "should handle @label commands" do
+        @renderer.render(['@label', 'foo']).should have_tag('label', with: {
           :for => 'foo' }, text: 'Foo')
       end
 
-      it "should handle @a commands" do
-        @renderer.render(['@a', 'foo']).should have_tag('div') do
+      it "should handle @attr commands" do
+        @renderer.render(['@attr', 'foo']).should have_tag('div') do
           with_tag 'label', with: { :for => 'foo' }
           with_tag 'input', with: { :name => 'foo', :value => '42' }
         end

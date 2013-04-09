@@ -27,7 +27,7 @@ module Pigeon
       end
 
       it "should render the given layout with attributes from the channel" do
-        helper.pigeon_render_channel_layout(@channel, ['@f', 'ticket_code']).
+        helper.pigeon_render_channel_layout(@channel, ['@field', 'ticket_code']).
           should have_tag('input', with: { name: 'ticket_code' })
       end
 
@@ -45,8 +45,7 @@ module Pigeon
       end
 
       it "should wrap channel's attributes in the given scope" do
-        helper.pigeon_render_channel_layout(@channel, ['@f', 'ticket_code'], 'foo').
-          should have_tag('input', with: { name: 'foo[ticket_code]' })
+        helper.pigeon_render_channel_layout(@channel, ['@field', 'ticket_code'], 'foo').  should have_tag('input', with: { name: 'foo[ticket_code]' })
       end
     end
   end

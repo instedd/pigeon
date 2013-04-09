@@ -4,26 +4,31 @@ module Pigeon
       scope = options.delete(:scope)
       field_name = attribute.scoped_name(scope)
       field_value = value || ''
+      forced_type = options.delete(:type)
+      render_type = (forced_type || attribute.type).to_s
 
-      case attribute.type
-      when :string
+      case render_type
+      when "string"
         text_field_tag(field_name, field_value, options)
-      when :password
+      when "password"
         password_field_tag(field_name, field_value, options)
-      when :integer
+      when "integer"
         number_field_tag(field_name, field_value, options)
-      when :enum
+      when "enum"
         choices = attribute.options
         if choices.length > 0 && choices[0].is_a?(Hash)
           choices = choices.map { |h| [h["display"], h["value"]] }
         end
         select_tag(field_name, options_for_select(choices, field_value), options)
-      when :timezone
+      when "timezone"
         select_tag(field_name, time_zone_options_for_select(field_value), options)
-      when :boolean
+      when "boolean"
         check_box_tag(field_name, '1', field_value.present?, options)
-      when :hidden
+      when "hidden"
         hidden_field_tag(field_name, field_value, options)
+      else
+        text_field_tag(field_name, field_value, 
+                       { :type => render_type }.merge(options))
       end
     end
 
