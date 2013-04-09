@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'pigeon/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "pigeon"
+  gem.name          = "instedd-pigeon"
   gem.version       = Pigeon::VERSION
   gem.authors       = ["Ary Borenszweig", "Gustavo Giráldez"]
   gem.email         = ["aborenszweig@manas.com.ar", "ggiraldez@manas.com.ar"]
