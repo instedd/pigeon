@@ -25,6 +25,33 @@ module Pigeon
           with_tag 'input', with: { :name => 'foo', :value => '42' }
         end
       end
+
+      it "should handle @hidden commands" do
+        @renderer.render(['@hidden', 'foo']).should have_tag('input', with: {
+          name: 'foo', type: 'hidden'
+        })
+      end
+
+      it "should accept options for attribute commands" do
+        @renderer.render(['@attr', { "class" => "field" }, 'foo']).should \
+            have_tag('div', with: { 'class' => 'field' }) do
+          with_tag 'label'
+          with_tag 'input'
+        end
+      end
+
+      context "with a scope" do
+        before(:each) do
+          @channel = Channel.new foo: '42'
+          @renderer = ChannelRenderer.new @channel, 'channel_data'
+        end
+
+        it "should add a scope attribute to @layout and @wizard commands" do
+          @renderer.render(['@layout']).should have_tag('div', with: {
+            "data-scope" => "channel_data"
+          })
+        end
+      end
     end
   end
 end

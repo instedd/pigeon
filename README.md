@@ -6,7 +6,7 @@ TODO: Write a gem description
 
 Add this line to your application's Gemfile:
 
-    gem 'instedd-pigeon'
+    gem 'instedd-pigeon', :require => 'pigeon'
 
 And then execute:
 

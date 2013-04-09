@@ -56,7 +56,7 @@ module Pigeon
 
     def default_layout
       ["@layout"] + user_attributes.map do |attr_name|
-        ["@attr", attr_name, { :class => "pigeon_attribute" }]
+        ["@attr", { :class => "pigeon_attribute" }, attr_name]
       end
     end
 

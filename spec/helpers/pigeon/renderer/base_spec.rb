@@ -71,7 +71,7 @@ module Pigeon
           should eq("<div id=\"foo\"></div>")
       end
 
-      it "should not render at-commands by default" do
+      it "should not render unknown at-commands by default" do
         @renderer.render(["@x", "foo"]).should eq('')
       end
 
@@ -84,6 +84,24 @@ module Pigeon
 
         @renderer = TestRenderer.new
         @renderer.render(["@x", "foo"]).should eq('@xfoo')
+      end
+
+      it "should escape HTML entities by default" do
+        @renderer.render(["h1", "<b>foo</b>"]).should_not have_tag('b')
+      end
+
+      it "should accept @raw command and not escape entities" do
+        @renderer.render(["@raw", "<b>foo</b>"]).should have_tag('b')
+      end
+
+      it "should accept @layout, @wizard and @page commands" do
+        @renderer.render(["@layout"]).should have_tag('div', with: { 'class' => 'pigeon pigeon_layout' })
+        @renderer.render(["@wizard"]).should have_tag('div', with: { 'class' => 'pigeon pigeon_wizard' })
+        @renderer.render(["@page"]).should have_tag('div', with: { 'class' => 'pigeon_wizard_page' })
+      end
+
+      it "should prefix custom options with 'data-' in layout commands" do
+        @renderer.render(["@layout", { "foo" => 42 }]).should have_tag('div', with: { "data-foo" => 42 })
       end
     end
   end

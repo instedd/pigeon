@@ -15,16 +15,11 @@ class QstServerWizard extends PigeonWizard
       $(radio).attr('checked', radio.value == type)
     @onPhoneType type
 
-  generatePassword: (length = 8) ->
-    charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-    retVal = ""
-    n = charset.length
-    for i in [0..length]
-      retVal += charset.charAt(Math.floor(Math.random() * n))
-    retVal
-
-  run: ->
+  initWizard: ->
     self = this
+
+    @navigation.show()
+    @pages[0].disabled = true
 
     @ticket_code_fields = $('.ticket_code', @div)
     @phone_type_radios = $('.phone_type', @div)
@@ -34,12 +29,26 @@ class QstServerWizard extends PigeonWizard
       self.onPhoneType @value
 
     @ticket_code_fields.change ->
-      # update both ticket_cde fields to make sure the current value gets posted
+      # update both ticket_code fields to make sure the current value gets
+      # posted
       self.attribute('ticket_code').val(@value)
 
     password_field = @attribute('configuration[password]')
     if password_field.val() == ''
       password_field.val(@generatePassword())
+
+    @selectPage 1
+
+  initPersisted: ->
+    $('#qst-reconfigure', @div).click =>
+      @initWizard()
+    @navigation.hide()
+
+  run: ->
+    if @persisted
+      @initPersisted()
+    else
+      @initWizard()
 
     super
 

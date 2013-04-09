@@ -1,0 +1,18 @@
+twitter:
+  humanized_name: 'Twitter channel'
+  attributes:
+    - name: protocol
+      value: twitter
+      user: false
+    - name: token
+      type: hidden
+    - name: secret
+      type: hidden
+    - name: screen_name
+      humanized_name: Screen name
+    - name: welcome_message
+      label: Welcome message for new followers
+      tooltip: (leave blank if not desired)
+      humanized_name: Welcome message
+
+

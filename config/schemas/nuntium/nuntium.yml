@@ -6,7 +6,7 @@ clickatell:
       user: false
     - name: configuration
       attributes:
-        - name: username
+        - name: user
         - name: password
           type: password
         - name: api_id
@@ -32,6 +32,7 @@ clickatell:
         - name: concatenation
         - name: incoming_password
           type: password
+          humanized_name: Incoming password
           label: Incoming password (to use for the callback URLs)
 
 dtac:
@@ -184,13 +185,6 @@ twilio:
         - name: incoming_password
           type: password
           label: Incoming password (to use for the callback URLs)
-
-twitter:
-  humanized_name: 'Twitter channel'
-  attributes:
-    - name: protocol
-      value: twitter
-      user: false
 
 xmpp:
   humanized_name: 'XMPP channel'

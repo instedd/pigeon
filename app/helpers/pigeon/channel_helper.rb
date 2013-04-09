@@ -1,5 +1,9 @@
 module Pigeon
   module ChannelHelper
+    include ActionView::Helpers::CaptureHelper
+    include ActionView::Helpers::FormHelper
+    include ActionView::Helpers::FormOptionsHelper
+
     def pigeon_render_attribute_field(attribute, value = nil, options = {})
       scope = options.delete(:scope)
       field_name = attribute.scoped_name(scope)

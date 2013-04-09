@@ -41,7 +41,6 @@ module Pigeon
     def save
       return false unless valid?
 
-      puts attributes
       begin
         if !persisted?
           self.class.nuntium.create_channel attributes
@@ -58,7 +57,7 @@ module Pigeon
           elsif configuration.include? name
             errors.add "configuration[#{name}]", message
           else
-            errors.add :base, message
+            errors.add :base, "#{name} #{message}"
           end
         end
         false

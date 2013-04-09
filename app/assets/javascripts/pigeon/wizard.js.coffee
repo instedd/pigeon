@@ -11,7 +11,7 @@ class PigeonWizard extends PigeonLayout
     @prevButton = $('<button type="button">Prev</button>')
     @nextButton = $('<button type="button">Next</button>')
     @pages = $(@div).find('.pigeon_wizard_page')
-    $('<div class="pigeon_wizard_navigation"></div>').append(@prevButton).append(@nextButton).appendTo(@div)
+    @navigation = $('<div class="pigeon_wizard_navigation"></div>').append(@prevButton).append(@nextButton).appendTo(@div)
     @current = -1
 
     @prevButton.click =>
@@ -53,6 +53,14 @@ class PigeonWizard extends PigeonLayout
   run: ->
     @selectPage @nextActivePage(-1)
     
+  generatePassword: (length = 8) ->
+    charset = "abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    retVal = ""
+    n = charset.length
+    for i in [0..length]
+      retVal += charset.charAt(Math.floor(Math.random() * n))
+    retVal
+
 
 window.PigeonWizard = PigeonWizard
 

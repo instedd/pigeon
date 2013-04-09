@@ -3,6 +3,7 @@ require "pigeon/engine"
 
 module Pigeon
   class Config
+    attr_accessor :application_name
     attr_accessor :nuntium_host, :nuntium_account, :nuntium_app, :nuntium_app_password
     attr_accessor :verboice_host, :verboice_account, :verboice_password
   end

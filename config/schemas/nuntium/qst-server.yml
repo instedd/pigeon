@@ -28,6 +28,16 @@ qst_server:
       - configuration[password]
     -
       - "@page"
+      - id: persisted
+      - 
+        - h1
+        - Channel already configured for mobile phone.
+      -
+        - button#qst-reconfigure
+        - type: button
+        - Reconfigure channel using the wizard
+    -
+      - "@page"
       - id: start
       -
         - h1
@@ -99,8 +109,8 @@ qst_server:
           here to bind your local gateway to this poll.
       -
         - "@field"
-        - ticket_code
         - class: ticket_code
+        - ticket_code
     -
       - "@page"
       - id: other_download
@@ -161,6 +171,6 @@ qst_server:
           here to bind your local gateway to this poll.
       -
         - "@field"
-        - ticket_code
         - class: ticket_code
+        - ticket_code
         

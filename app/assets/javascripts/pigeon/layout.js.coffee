@@ -1,6 +1,9 @@
 class PigeonLayout
   constructor: (@div) ->
     @scope = $(@div).data('scope')
+    @channel_name = $(@div).data('name')
+    @channel_kind = $(@div).data('kind')
+    @persisted = $(@div).data('persisted')
 
   scoped_name: (name) ->
     if @scope

@@ -8,7 +8,30 @@ module Pigeon
       include ActionView::Helpers::TagHelper
       include ActionView::Helpers::AssetTagHelper
 
+      class << self
+        def handle(command, handler)
+          @handlers ||= {}
+          @handlers[command.to_s] = handler
+        end
+
+        def find_handler(command)
+          @handlers ||= {}
+          @handlers.fetch(command.to_s) do |command|
+            if superclass.respond_to?(:find_handler)
+              self.superclass.find_handler(command)
+            else
+              nil
+            end
+          end
+        end
+      end
+
       attr_accessor :delegate
+
+      handle :raw, :render_raw
+      handle :layout, :render_layout_command
+      handle :wizard, :render_layout_command
+      handle :page, :render_layout_command
 
       def render(v)
         return '' if v.empty?
@@ -21,28 +44,38 @@ module Pigeon
       end
 
       def render_at_command(v)
-        if delegate.present? && delegate.respond_to?(:call)
+        command = v.first[1..-1]
+        handler = find_handler(command)
+        if !handler.nil?
+          dispatch_command_handler(handler, v)
+        elsif delegate.present? && delegate.respond_to?(:call)
           delegate.call(v)
         else
           ''
         end
       end
 
+      def extract_options(data)
+        if data[1].is_a?(Hash)
+          [data[0], data[1], data.drop(2)]
+        else
+          [data[0], {}, data.drop(1)]
+        end
+      end
+
       def render_vector(v)
-        tag_name, options = parse_tag_name(v.first)
-        content = v.drop(1)
-        if content.first.is_a? Hash
-          options.update(content.first.with_indifferent_access) do |key, oldval, newval|
-            case key.to_s
-            when "id"
-              oldval
-            when "class"
-              oldval + " " + newval
-            else
-              newval
-            end
+        selector, user_options, content = extract_options(v)
+        tag_name, options = parse_tag_name(selector)
+
+        options.update(user_options.with_indifferent_access) do |key, oldval, newval|
+          case key.to_s
+          when "id"
+            oldval
+          when "class"
+            oldval + " " + newval
+          else
+            newval
           end
-          content = content.drop(1)
         end
 
         if tag_name.downcase == 'img'
@@ -70,6 +103,34 @@ module Pigeon
         end
       end
 
+      def render_raw(data)
+        data.drop(1).join.html_safe
+      end
+
+      def render_layout_command(v)
+        command, options, content = extract_options(v)
+
+        options = options.inject({}) do |options, (key, value)|
+          if %w(class style).include?(key.to_s) || key.to_s.starts_with?('data-')
+            options[key] = value
+          else
+            options["data-#{key.to_s}"] = value
+          end
+          options
+        end
+
+        case command
+        when '@wizard'
+          render ["div.pigeon.pigeon_wizard", options] + content
+        when '@page'
+          render ["div.pigeon_wizard_page", options] + content
+        when '@layout'
+          render ["div.pigeon.pigeon_layout", options] + content
+        else
+          ''
+        end
+      end
+
     private
 
       def parse_tag_name(input)
@@ -88,6 +149,18 @@ module Pigeon
         options[:class] = classes.join(' ') unless classes.empty?
 
         [tag_name, options]
+      end
+
+      def find_handler(command)
+        self.class.find_handler(command)
+      end
+
+      def dispatch_command_handler(handler, data)
+        if handler.is_a?(Symbol)
+          self.send(handler, data)
+        elsif handler.is_a?(Proc)
+          handler.class(data)
+        end
       end
     end
   end
