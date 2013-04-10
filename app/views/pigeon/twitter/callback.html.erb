@@ -1,0 +1,6 @@
+<!doctype html>
+<title>Twitter callback</title>
+<script type="text/javascript">
+  window.opener['<%= @callback %>']("<%= @access_token.token %>", "<%= @access_token.secret %>", "<%= @screen_name %>");
+  window.close();
+</script>

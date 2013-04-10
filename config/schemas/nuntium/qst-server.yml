@@ -34,7 +34,7 @@ qst_server:
       -
         - button#qst-reconfigure
         - type: button
-        - Reconfigure channel using the wizard
+        - Reconfigure channel
     -
       - "@page"
       - id: start

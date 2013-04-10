@@ -15,6 +15,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'rails', '~> 3.2.12'
   gem.add_dependency 'nuntium_api', '~> 0.19'
   gem.add_dependency 'verboice', '0.6.0'
+  gem.add_dependency 'twitter_oauth'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

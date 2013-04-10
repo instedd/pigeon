@@ -44,6 +44,7 @@ class QstServerWizard extends PigeonWizard
       @initWizard()
       @selectPage 1
     @navigation.hide()
+    @selectPage 0
 
   run: ->
     if @persisted

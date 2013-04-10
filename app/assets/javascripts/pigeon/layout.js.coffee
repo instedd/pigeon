@@ -1,4 +1,9 @@
 class PigeonLayout
+  @klasses = {}
+
+  @registerClass: (type, klass) ->
+    @klasses[type] = klass
+
   constructor: (@div) ->
     div = $(@div)
     @scope = div.data('scope')
@@ -26,7 +31,12 @@ window.PigeonLayout = PigeonLayout
 
 jQuery.fn.pigeonLayout = ->
   @each (index, layout) ->
-    new PigeonLayout(layout).run()
+    type = $(layout).data('type')
+    klass = PigeonLayout.klasses[type]
+    if klass
+      new klass(layout).run()
+    else
+      new PigeonLayout(layout).run()
 
 jQuery ->
   $('.pigeon.pigeon_layout').pigeonLayout()

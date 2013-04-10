@@ -120,6 +120,7 @@ module Pigeon
         end
         if %w(@layout @wizard).include?(command)
           options["data-application-name"] ||= Pigeon.config.application_name
+          options["data-twitter-path"] = Pigeon::Engine.routes.url_helpers.twitter_path
         end
 
         case command

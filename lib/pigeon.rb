@@ -6,6 +6,8 @@ module Pigeon
     attr_accessor :application_name
     attr_accessor :nuntium_host, :nuntium_account, :nuntium_app, :nuntium_app_password
     attr_accessor :verboice_host, :verboice_account, :verboice_password
+
+    attr_accessor :twitter_consumer_key, :twitter_consumer_secret
   end
 
   def self.config

@@ -4,15 +4,53 @@ twitter:
     - name: protocol
       value: twitter
       user: false
-    - name: token
-      type: hidden
-    - name: secret
-      type: hidden
-    - name: screen_name
-      humanized_name: Screen name
-    - name: welcome_message
-      label: Welcome message for new followers
-      tooltip: (leave blank if not desired)
-      humanized_name: Welcome message
-
+    - name: configuration
+      attributes:
+      - name: token
+        type: hidden
+      - name: secret
+        type: hidden
+      - name: screen_name
+        humanized_name: Screen name
+      - name: welcome_message
+        label: Welcome message for new followers
+        tooltip: (leave blank if not desired)
+        humanized_name: Welcome message
+  layout:
+    - "@layout"
+    - type: twitter
+    -
+      - "@hidden"
+      - configuration[token]
+    -
+      - "@hidden"
+      - configuration[secret]
+    -
+      - "@hidden"
+      - configuration[screen_name]
+    - 
+      - div.twitter_not_authorized
+      -
+        - h2
+        - Twitter account not configured yet.
+      -
+        - button
+        - type: button
+          class: twitter_authorize_button
+        - Authorize Twitter account
+    - 
+      - div.twitter_authorized
+      -
+        - h2
+        - "Screen name: "
+        -
+          - span.screen_name
+      -
+        - button
+        - type: button
+          class: twitter_authorize_button
+        - Authorize another Twitter account
+    -
+      - "@attr"
+      - configuration[welcome_message]
 

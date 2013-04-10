@@ -76,7 +76,7 @@ module Pigeon
           end
           @destroyed = true
         rescue Nuntium::Exception => e
-          puts e
+          Rails.logger.warn "error deleting Nuntium channel: #{e.message}"
         end
       end
     end

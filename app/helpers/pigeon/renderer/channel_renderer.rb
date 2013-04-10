@@ -27,10 +27,15 @@ module Pigeon
         when '@label'
           pigeon_render_channel_attribute_label(channel, name, options)
         when '@attr'
+          if options.include?(:class)
+            options[:class] << ' pigeon_attribute'
+          else
+            options[:class] = 'pigeon_attribute'
+          end
           pigeon_render_channel_attribute(channel, name, options)
         when '@hidden'
-          pigeon_render_channel_attribute_field(channel, name, 
-                                                options.merge({ :type => :hidden }))
+          options = options.update({ :type => :hidden })
+          pigeon_render_channel_attribute_field(channel, name, options)
         else
           ''
         end
