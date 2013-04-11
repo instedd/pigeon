@@ -180,12 +180,20 @@ module Pigeon
     end
 
     def human_attribute_name(attr_name, options = {})
-      if schema.nil?
-        super
-      else
-        schema.find_attribute(attr_name).try(:humanized_name) || 
-          self.class.human_attribute_name(attr_name, options)
-      end
+      (!schema.nil? && schema.find_attribute(attr_name).try(:humanized_name)) || 
+        self.class.human_attribute_name(attr_name, options)
+    end
+
+    def save
+      raise NotImplementedError
+    end
+
+    def save!
+      save || raise(ChannelInvalid.new(self))
+    end
+
+    def destroy
+      raise NotImplementedError
     end
 
   private

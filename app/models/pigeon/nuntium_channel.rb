@@ -64,10 +64,6 @@ module Pigeon
       end
     end
 
-    def save!
-      save || raise(ChannelInvalid.new(self))
-    end
-
     def destroy
       if !destroyed?
         begin

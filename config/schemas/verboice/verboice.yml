@@ -1,60 +1,76 @@
 callcentric:
   humanized_name: 'Callcentric channel'
   attributes:
-    - name: username
-      type: string
-    - name: password
-      type: password
-    - name: number
-      type: string
+    - name: config
+      attributes:
+      - name: kind
+        value: Callcentric
+        user: false
+      - name: username
+        type: string
+      - name: password
+        type: password
+      - name: number
+        type: string
 
 custom:
   humanized_name: 'Custom channel'
   attributes:
-    - name: dial_string
-      type: string
+    - name: config
+      attributes:
+      - name: dial_string
+        type: string
 
 sip:
   humanized_name: 'SIP channel'
   attributes:
-    - name: username
-      type: string
-    - name: password
-      type: password
-    - name: number
-      type: string
-    - name: limit
-      type: string
-    - name: domain
-      type: string
-    - name: direction
-      type: enum
-      options:
-        - value: incoming
-          display: Incoming
-        - value: outgoing
-          display: Outgoing
-        - value: both
-          display: Both directions
-    - name: register
-      type: boolean
+    - name: config
+      attributes:
+      - name: username
+        type: string
+      - name: password
+        type: password
+      - name: number
+        type: string
+      - name: limit
+        type: string
+      - name: domain
+        type: string
+      - name: direction
+        type: enum
+        options:
+          - value: incoming
+            display: Incoming
+          - value: outgoing
+            display: Outgoing
+          - value: both
+            display: Both directions
+      - name: register
+        type: boolean
 
 skype:
   humanized_name: 'Skype channel'
   attributes:
-    - name: username
-      type: string
-    - name: password
-      type: password
-    - name: number
-      type: string
+    - name: config
+      attributes:
+      - name: kind
+        value: Skype
+        user: false
+      - name: username
+        type: string
+      - name: password
+        type: password
+      - name: number
+        type: string
 
 voxeo:
   humanized_name: 'Voxeo channel'
   attributes:
-    - name: token
-      type: string
-    - name: url
-      type: string
+    - name: config
+      attributes:
+      - name: token
+        type: string
+      - name: url
+        type: string
 
 
