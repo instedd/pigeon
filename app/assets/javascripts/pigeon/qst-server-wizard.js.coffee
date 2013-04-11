@@ -38,6 +38,7 @@ class QstServerWizard extends PigeonWizard
       password_field.val(@generatePassword())
 
     @attribute('ticket_message').val("This phone will be used for #{@app_name}.")
+    @attribute('use_ticket').val(true)
 
   initPersisted: ->
     $('#qst-reconfigure', @div).click =>

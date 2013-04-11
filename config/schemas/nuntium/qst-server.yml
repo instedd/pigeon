@@ -9,6 +9,8 @@ qst_server:
       user: false
     - name: ticket_code
     - name: ticket_message
+    - name: use_ticket
+      type: boolean
     - name: configuration
       attributes:
         - name: password
@@ -22,6 +24,9 @@ qst_server:
     -
       - "@hidden"
       - ticket_message
+    -
+      - "@hidden"
+      - use_ticket
     -
       - "@hidden"
       - configuration[password]
