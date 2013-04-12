@@ -38,7 +38,7 @@ module Pigeon
         puts attributes
         if !persisted?
           self.class.verboice.create_channel attributes
-          @persisted = false
+          @persisted = true
         else
           self.class.verboice.update_channel attributes
         end

@@ -27,12 +27,12 @@ module Pigeon
       end
 
       it "should render the given layout with attributes from the channel" do
-        helper.pigeon_render_channel_layout(@channel, ['@field', 'ticket_code']).
+        helper.pigeon_render_channel_layout(@channel, ['@field', 'ticket_code'], nil).
           should have_tag('input', with: { name: 'ticket_code' })
       end
 
       it "should render the channel's schema layout by default" do
-        out = helper.pigeon_render_channel_layout(@channel)
+        out = helper.pigeon_render_channel_layout(@channel, nil, nil)
         out.should have_tag('input', with: { name: 'ticket_code' })
         out.should have_tag('input', with: { name: 'configuration[user]' })
       end
@@ -42,6 +42,10 @@ module Pigeon
           args.first.should eq('@x')
           'XXX'
         end.should eq('XXX')
+      end
+
+      it "should by default use the 'channel' scope" do
+        helper.pigeon_render_channel_layout(@channel, ['@field', 'ticket_code']).  should have_tag('input', with: { name: 'channel[ticket_code]' })
       end
 
       it "should wrap channel's attributes in the given scope" do

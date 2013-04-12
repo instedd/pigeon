@@ -44,7 +44,7 @@ module Pigeon
       begin
         if !persisted?
           self.class.nuntium.create_channel attributes
-          @persisted = false
+          @persisted = true
         else
           self.class.nuntium.update_channel attributes
         end

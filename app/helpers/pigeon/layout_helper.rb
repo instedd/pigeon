@@ -6,7 +6,7 @@ module Pigeon
       renderer.render layout
     end
 
-    def pigeon_render_channel_layout(channel, layout = nil, scope = nil, &block)
+    def pigeon_render_channel_layout(channel, layout = nil, scope = 'channel', &block)
       renderer = Renderer::ChannelRenderer.new channel, scope
       renderer.delegate = block if block_given?
       layout ||= channel.schema.layout
