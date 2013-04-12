@@ -1,7 +1,8 @@
 # Pigeon
 
-This gem handles creating, updating and destroying Nuntium and Verboice
-channels in your Rails application.
+This gem handles creating, updating and destroying
+[Nuntium](http://nuntium.instedd.org) and
+[Verboice](http://verboice.instedd.org) channels in your Rails application.
 
 ## Installation
 
@@ -15,7 +16,7 @@ And then execute:
 
 ## Usage
 
-Create an initializer to configure Pigeon:
+Create an initializer to configure Pigeon (eg. `config/initializers/pigeon.rb`):
 
     Pigeon.setup do |config|
         config.application_name = 'My application'
