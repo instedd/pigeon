@@ -1,5 +1,5 @@
 module Pigeon
-  class VerboiceChannel < Channel
+  class VerboiceChannel < ::Pigeon::Channel
 
     class << self
       def type() :verboice end

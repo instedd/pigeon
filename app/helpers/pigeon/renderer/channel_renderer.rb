@@ -1,6 +1,6 @@
 module Pigeon
   module Renderer
-    class ChannelRenderer < Base
+    class ChannelRenderer < ::Pigeon::Renderer::Base
       include Pigeon::ChannelHelper
 
       attr_accessor :output_buffer

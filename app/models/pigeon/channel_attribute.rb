@@ -1,5 +1,5 @@
 module Pigeon
-  class ChannelAttribute < NestedAttribute
+  class ChannelAttribute < ::Pigeon::NestedAttribute
     attr_reader :type, :default_value, :humanized_name, :label, :tooltip, :user_editable, :options
     attr_writer :scope
 

@@ -1,5 +1,5 @@
 module Pigeon
-  class NuntiumChannel < Channel
+  class NuntiumChannel < ::Pigeon::Channel
 
     class << self
       def type() :nuntium end
