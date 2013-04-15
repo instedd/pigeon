@@ -9,8 +9,8 @@ Gem::Specification.new do |gem|
   gem.authors       = ["Ary Borenszweig", "Gustavo Giráldez"]
   gem.email         = ["aborenszweig@manas.com.ar", "ggiraldez@manas.com.ar"]
   gem.description   = %q{Channel management frontend for Nuntium & Verboice}
-  gem.summary       = %q{}
-  gem.homepage      = ""
+  gem.summary       = %q{This gem handles creating, updating and destroying channels in Nuntium and Verboice for your Rails application.}
+  gem.homepage      = "https://bitbucket.org/instedd/pigeon"
 
   gem.add_dependency 'rails', '~> 3.2.12'
   gem.add_dependency 'nuntium_api', '~> 0.19'
