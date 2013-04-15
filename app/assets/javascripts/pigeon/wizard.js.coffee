@@ -1,6 +1,6 @@
-#= require pigeon/layout
+#= require pigeon/template
 
-class PigeonWizard extends PigeonLayout
+class PigeonWizard extends PigeonTemplate
   @klasses = {}
 
   @registerClass: (type, klass) ->

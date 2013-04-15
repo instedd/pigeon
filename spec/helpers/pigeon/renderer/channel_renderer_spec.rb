@@ -46,8 +46,11 @@ module Pigeon
           @renderer = ChannelRenderer.new @channel, 'channel_data'
         end
 
-        it "should add a scope attribute to @layout and @wizard commands" do
-          @renderer.render(['@layout']).should have_tag('div', with: {
+        it "should add a scope attribute to @template and @wizard commands" do
+          @renderer.render(['@template']).should have_tag('div', with: {
+            "data-scope" => "channel_data"
+          })
+          @renderer.render(['@wizard']).should have_tag('div', with: {
             "data-scope" => "channel_data"
           })
         end

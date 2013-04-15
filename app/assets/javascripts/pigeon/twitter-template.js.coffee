@@ -1,6 +1,6 @@
-#= require pigeon/layout
+#= require pigeon/template
 
-class TwitterLayout extends PigeonLayout
+class TwitterTemplate extends PigeonTemplate
   onAuthorized: ->
     $('.twitter_not_authorized').hide()
     $('.twitter_authorized').show()
@@ -34,5 +34,5 @@ class TwitterLayout extends PigeonLayout
     @button.click =>
       @beginTwitterAuthorization()
 
-PigeonLayout.registerClass 'twitter', TwitterLayout
+PigeonTemplate.registerClass 'twitter', TwitterTemplate
 

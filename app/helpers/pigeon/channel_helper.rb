@@ -4,7 +4,7 @@ module Pigeon
     include ActionView::Helpers::FormHelper
     include ActionView::Helpers::FormOptionsHelper
 
-    def pigeon_render_attribute_field(attribute, value = nil, options = {})
+    def pigeon_attribute_field(attribute, value = nil, options = {})
       scope = options.delete(:scope)
       field_name = attribute.scoped_name(scope)
       field_value = value || ''
@@ -36,19 +36,19 @@ module Pigeon
       end
     end
 
-    def pigeon_render_attribute_label(attribute, options = {})
+    def pigeon_attribute_label(attribute, options = {})
       return '' if attribute.type == :hidden
       scope = options.delete(:scope)
       field_name = attribute.scoped_name(scope)
       label_tag(field_name, attribute.label, options)
     end
 
-    def pigeon_render_attribute(attribute, value = nil, options = {})
+    def pigeon_attribute(attribute, value = nil, options = {})
       scope = options.delete(:scope)
       field_with_errors = options.delete(:field_with_errors)
       content_tag :div, options do
-        label = pigeon_render_attribute_label(attribute, scope: scope)
-        field = pigeon_render_attribute_field(attribute, value, scope: scope)
+        label = pigeon_attribute_label(attribute, scope: scope)
+        field = pigeon_attribute_field(attribute, value, scope: scope)
         if field_with_errors.present?
           field = content_tag :div, field, :class => 'field_with_errors'
         end
@@ -62,11 +62,11 @@ module Pigeon
       end
     end
 
-    def pigeon_render_channel_attribute_field(channel, attr_name, options = {})
+    def pigeon_channel_attribute_field(channel, attr_name, options = {})
       value = channel.read_attribute(attr_name)
       attribute = channel.schema.try(:find_attribute, attr_name)
       attribute ||= ChannelAttribute.build_default(attr_name, value)
-      field = pigeon_render_attribute_field(attribute, value, options)
+      field = pigeon_attribute_field(attribute, value, options)
       if channel.errors.include?(attr_name.to_sym)
         content_tag :div, field, :class => 'field_with_errors'
       else
@@ -74,20 +74,20 @@ module Pigeon
       end
     end
 
-    def pigeon_render_channel_attribute_label(channel, attr_name, options = {})
+    def pigeon_channel_attribute_label(channel, attr_name, options = {})
       attribute = channel.schema.try(:find_attribute, attr_name)
       attribute ||= ChannelAttribute.build_default(attr_name)
-      pigeon_render_attribute_label(attribute, options)
+      pigeon_attribute_label(attribute, options)
     end
 
-    def pigeon_render_channel_attribute(channel, attr_name, options = {})
+    def pigeon_channel_attribute(channel, attr_name, options = {})
       value = channel.read_attribute(attr_name)
       attribute = channel.schema.try(:find_attribute, attr_name)
       attribute ||= ChannelAttribute.build_default(attr_name, value)
       if channel.errors.include?(attr_name.to_sym)
         options[:field_with_errors] = true
       end
-      pigeon_render_attribute(attribute, value, options)
+      pigeon_attribute(attribute, value, options)
     end
   end
 end

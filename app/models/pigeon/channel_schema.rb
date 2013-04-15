@@ -4,7 +4,7 @@ module Pigeon
 
     class << self
       def from_hash(type, hash)
-        self.new type, hash["kind"], hash["humanized_name"], hash["attributes"], hash["layout"]
+        self.new type, hash["kind"], hash["humanized_name"], hash["attributes"], hash["template"]
       end
 
       def list_from_hash(type, hash)
@@ -15,9 +15,9 @@ module Pigeon
       end
     end
 
-    attr_reader :type, :kind, :humanized_name, :attribute_data, :layout_data
+    attr_reader :type, :kind, :humanized_name, :attribute_data, :template_data
 
-    def initialize(type, kind, humanized_name = nil, attributes = [], layout = nil)
+    def initialize(type, kind, humanized_name = nil, attributes = [], template = nil)
       raise ArgumentError, "type cannot be blank" if type.blank?
       raise ArgumentError, "kind cannot be blank" if kind.blank?
 
@@ -25,7 +25,7 @@ module Pigeon
       @kind = kind
       @humanized_name = humanized_name || kind
       @attribute_data = attributes
-      @layout_data = layout
+      @template_data = template
     end
 
     def attributes
@@ -46,16 +46,16 @@ module Pigeon
       recursive_map_filter(attributes, &:default_value)
     end
 
-    def layout
-      @layout ||= @layout_data ? process_layout(@layout_data) : default_layout
+    def template
+      @template ||= @template_data ? process_template(@template_data) : default_template
     end
 
     def type_kind
       "#{type}/#{kind}"
     end
 
-    def default_layout
-      ["@layout"] + user_attributes.map do |attr_name|
+    def default_template
+      ["@template"] + user_attributes.map do |attr_name|
         ["@attr", attr_name]
       end
     end
@@ -106,8 +106,8 @@ module Pigeon
       end].with_indifferent_access
     end
 
-    def process_layout(layout)
-      layout
+    def process_template(template)
+      template
     end
   end
 end

@@ -1,4 +1,4 @@
-class PigeonLayout
+class PigeonTemplate
   @klasses = {}
 
   @registerClass: (type, klass) ->
@@ -27,17 +27,17 @@ class PigeonLayout
 
   run: ->
 
-window.PigeonLayout = PigeonLayout
+window.PigeonTemplate = PigeonTemplate
 
-jQuery.fn.pigeonLayout = ->
-  @each (index, layout) ->
-    type = $(layout).data('type')
-    klass = PigeonLayout.klasses[type]
+jQuery.fn.pigeonTemplate = ->
+  @each (index, template) ->
+    type = $(template).data('type')
+    klass = PigeonTemplate.klasses[type]
     if klass
-      new klass(layout).run()
+      new klass(template).run()
     else
-      new PigeonLayout(layout).run()
+      new PigeonTemplate(template).run()
 
 jQuery ->
-  $('.pigeon.pigeon_layout').pigeonLayout()
+  $('.pigeon.pigeon_template').pigeonTemplate()
 

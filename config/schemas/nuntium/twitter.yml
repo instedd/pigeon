@@ -16,8 +16,8 @@ twitter:
         label: Welcome message for new followers
         tooltip: (leave blank if not desired)
         humanized_name: Welcome message
-  layout:
-    - "@layout"
+  template:
+    - "@template"
     - type: twitter
     -
       - "@hidden"

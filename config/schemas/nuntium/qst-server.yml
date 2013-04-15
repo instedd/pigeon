@@ -15,7 +15,7 @@ qst_server:
       attributes:
         - name: password
           type: password
-  layout:
+  template:
     - "@wizard"
     - type: qst-server
     -

@@ -29,9 +29,9 @@ module Pigeon
       attr_accessor :delegate
 
       handle :raw, :render_raw
-      handle :layout, :render_layout_command
-      handle :wizard, :render_layout_command
-      handle :page, :render_layout_command
+      handle :template, :render_template_command
+      handle :wizard, :render_template_command
+      handle :page, :render_template_command
 
       def render(v)
         return '' if v.empty?
@@ -107,7 +107,7 @@ module Pigeon
         data.drop(1).join.html_safe
       end
 
-      def render_layout_command(v)
+      def render_template_command(v)
         command, options, content = extract_options(v)
 
         options = options.inject({}) do |options, (key, value)|
@@ -118,7 +118,7 @@ module Pigeon
           end
           options
         end
-        if %w(@layout @wizard).include?(command)
+        if %w(@template @wizard).include?(command)
           options["data-application-name"] ||= Pigeon.config.application_name
           options["data-twitter-path"] = Pigeon::Engine.routes.url_helpers.twitter_path
         end
@@ -128,8 +128,8 @@ module Pigeon
           render ["div.pigeon.pigeon_wizard", options] + content
         when '@page'
           render ["div.pigeon_wizard_page", options] + content
-        when '@layout'
-          render ["div.pigeon.pigeon_layout", options] + content
+        when '@template'
+          render ["div.pigeon.pigeon_template", options] + content
         else
           ''
         end

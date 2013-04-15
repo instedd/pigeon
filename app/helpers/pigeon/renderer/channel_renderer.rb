@@ -23,27 +23,27 @@ module Pigeon
 
         case command
         when '@field'
-          pigeon_render_channel_attribute_field(channel, name, options)
+          pigeon_channel_attribute_field(channel, name, options)
         when '@label'
-          pigeon_render_channel_attribute_label(channel, name, options)
+          pigeon_channel_attribute_label(channel, name, options)
         when '@attr'
           if options.include?(:class)
             options[:class] << ' pigeon_attribute'
           else
             options[:class] = 'pigeon_attribute'
           end
-          pigeon_render_channel_attribute(channel, name, options)
+          pigeon_channel_attribute(channel, name, options)
         when '@hidden'
           options = options.update({ :type => :hidden })
-          pigeon_render_channel_attribute_field(channel, name, options)
+          pigeon_channel_attribute_field(channel, name, options)
         else
           ''
         end
       end
 
-      def render_layout_command(v)
+      def render_template_command(v)
         command, options, content = extract_options(v)
-        if %w(@wizard @layout).include?(command)
+        if %w(@wizard @template).include?(command)
           options["data-scope"] ||= scope if scope.present?
           options["data-persisted"] = channel.persisted?
           options["data-kind"] = channel.kind

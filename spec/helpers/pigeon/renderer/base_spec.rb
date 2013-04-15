@@ -94,14 +94,14 @@ module Pigeon
         @renderer.render(["@raw", "<b>foo</b>"]).should have_tag('b')
       end
 
-      it "should accept @layout, @wizard and @page commands" do
-        @renderer.render(["@layout"]).should have_tag('div', with: { 'class' => 'pigeon pigeon_layout' })
+      it "should accept @template, @wizard and @page commands" do
+        @renderer.render(["@template"]).should have_tag('div', with: { 'class' => 'pigeon pigeon_template' })
         @renderer.render(["@wizard"]).should have_tag('div', with: { 'class' => 'pigeon pigeon_wizard' })
         @renderer.render(["@page"]).should have_tag('div', with: { 'class' => 'pigeon_wizard_page' })
       end
 
-      it "should prefix custom options with 'data-' in layout commands" do
-        @renderer.render(["@layout", { "foo" => 42 }]).should have_tag('div', with: { "data-foo" => 42 })
+      it "should prefix custom options with 'data-' in template commands" do
+        @renderer.render(["@template", { "foo" => 42 }]).should have_tag('div', with: { "data-foo" => 42 })
       end
     end
   end

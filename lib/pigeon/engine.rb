@@ -6,7 +6,7 @@ module Pigeon
       ActiveSupport.on_load :action_controller do
         helper Pigeon::TagHelper
         helper Pigeon::TextHelper
-        helper Pigeon::LayoutHelper
+        helper Pigeon::TemplateHelper
         helper Pigeon::ChannelHelper
       end
     end  
