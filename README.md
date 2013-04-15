@@ -112,14 +112,14 @@ The gem also provides helpers to aid in the rendering of the channel's
 configuration form. The most important ones are
 `pigeon_nuntium_channel_kinds_for_select` and
 `pigeon_verboice_channel_kinds_for_select` to use as options generators for the
-`select_tag` Rails helper, and `pigeon_render_channel_layout` which will render
+`select_tag` Rails helper, and `pigeon_render_channel` which will render
 the fields required for a user to configure the given channel.
 
 For example, in the view:
 
     <%= form_tag('/channels') do %>
         <%= hidden_field_tag :name, @channel.name %>
-        <%= pigeon_render_channel_layout @channel %>
+        <%= pigeon_render_channel @channel %>
     <%= end %>
 
 Then in the controller:
