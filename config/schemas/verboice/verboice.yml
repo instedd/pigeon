@@ -12,6 +12,10 @@ callcentric:
         type: password
       - name: number
         type: string
+      - name: limit
+        type: integer
+        value: 1
+        user: false
 
 custom:
   humanized_name: 'Custom channel'
@@ -20,6 +24,9 @@ custom:
       attributes:
       - name: dial_string
         type: string
+      - name: limit
+        type: integer
+        value: 1
 
 sip:
   humanized_name: 'SIP channel'
@@ -33,7 +40,7 @@ sip:
       - name: number
         type: string
       - name: limit
-        type: string
+        type: integer
       - name: domain
         type: string
       - name: direction
@@ -62,6 +69,10 @@ skype:
         type: password
       - name: number
         type: string
+      - name: limit
+        type: integer
+        value: 1
+        user: false
 
 voxeo:
   humanized_name: 'Voxeo channel'
@@ -72,5 +83,9 @@ voxeo:
         type: string
       - name: url
         type: string
+      - name: limit
+        type: integer
+        value: 1
+        user: false
 
 

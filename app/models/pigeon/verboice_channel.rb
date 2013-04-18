@@ -31,6 +31,10 @@ module Pigeon
 
     validates_presence_of :call_flow
 
+    def limit
+      config[:limit].to_i || 1
+    end
+
     def save
       return false unless valid?
 
