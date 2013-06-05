@@ -24,5 +24,21 @@ module Pigeon
       })  
     end 
   end
+
+  class ApiException
+    attr_accessor :properties
+
+    def initialize(msg, properties = {})
+      super msg
+      @properties = properties
+    end
+  end
+  
+  class VerboiceException < ApiException
+  end
+
+  class NuntiumException < ApiException
+  end
+
 end
 

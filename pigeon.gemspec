@@ -12,10 +12,10 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{This gem handles creating, updating and destroying channels in Nuntium and Verboice for your Rails application.}
   gem.homepage      = "https://bitbucket.org/instedd/pigeon"
 
-  gem.add_dependency 'rails', '~> 3.2.12'
-  gem.add_dependency 'nuntium_api', '~> 0.19'
-  gem.add_dependency 'verboice', '0.7.0'
+  gem.add_dependency 'rails', '~> 3.2'
   gem.add_dependency 'twitter_oauth'
+  gem.add_dependency 'rest-client'
+  gem.add_dependency 'json'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
