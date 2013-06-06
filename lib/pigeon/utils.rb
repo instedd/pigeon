@@ -34,7 +34,7 @@ module Pigeon
 
     def get_json(path)
       get(path) do |response, error|
-        raise self.error_class.new error.message if error
+        raise self.class.error_class.new error.message if error
 
         elem = JSON.parse response.body
         elem.map! { |x| with_indifferent_access x } if elem.is_a? Array

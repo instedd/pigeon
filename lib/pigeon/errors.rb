@@ -25,7 +25,7 @@ module Pigeon
     end 
   end
 
-  class ApiException
+  class ApiException < PigeonError
     attr_accessor :properties
 
     def initialize(msg, properties = {})
