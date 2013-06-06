@@ -13,7 +13,7 @@ module Pigeon
       end
 
       def verboice
-        @verboice ||= Verboice.from_config
+        @verboice ||= ::Pigeon::Verboice.from_config
       end
 
     private
@@ -39,7 +39,6 @@ module Pigeon
       return false unless valid?
 
       begin
-        puts attributes
         if !persisted?
           self.class.verboice.create_channel attributes
           @persisted = true
@@ -47,7 +46,7 @@ module Pigeon
           self.class.verboice.update_channel attributes
         end
         true
-      rescue Verboice::Exception => e
+      rescue Pigeon::VerboiceException => e
         Rails.logger.warn "error saving Verboice channel: #{e.message}"
         e.properties.each do |name, message|
           if attributes.include? name
@@ -69,7 +68,7 @@ module Pigeon
             self.class.verboice.delete_channel(name)
           end
           @destroyed = true
-        rescue Verboice::Exception => e
+        rescue Pigeon::VerboiceException => e
           Rails.logger.warn "error deleting Verboice channel: #{e.message}"
         end
       end

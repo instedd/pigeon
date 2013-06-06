@@ -15,7 +15,7 @@ module Pigeon
       end
 
       def nuntium
-        @nuntium ||= Nuntium.from_config
+        @nuntium ||= ::Pigeon::Nuntium.from_config
       end
 
     private
@@ -49,7 +49,7 @@ module Pigeon
           self.class.nuntium.update_channel attributes
         end
         true
-      rescue Nuntium::Exception => e
+      rescue Pigeon::NuntiumException => e
         Rails.logger.warn "error saving Nuntium channel: #{e.message}"
         e.properties.each do |name, message|
           if attributes.include? name
@@ -71,7 +71,7 @@ module Pigeon
             self.class.nuntium.delete_channel(name)
           end
           @destroyed = true
-        rescue Nuntium::Exception => e
+        rescue Pigeon::NuntiumException => e
           Rails.logger.warn "error deleting Nuntium channel: #{e.message}"
         end
       end
