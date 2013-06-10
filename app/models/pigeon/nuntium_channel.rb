@@ -25,7 +25,13 @@ module Pigeon
       end
 
       def load_schemas
-        Pigeon::ChannelSchema.list_from_hash(:nuntium, PigeonConfig::NuntiumChannelSchemas)
+        if Pigeon.config.nuntium_configured?
+          Pigeon::ChannelSchema.list_from_hash(:nuntium, PigeonConfig::NuntiumChannelSchemas).reject do |schema|
+            schema.kind == 'twitter' && !Pigeon.config.twitter_configured?
+          end
+        else
+          []
+        end
       end
     end
 

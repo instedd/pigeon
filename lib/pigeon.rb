@@ -9,6 +9,18 @@ module Pigeon
     attr_accessor :verboice_default_call_flow
 
     attr_accessor :twitter_consumer_key, :twitter_consumer_secret
+
+    def nuntium_configured?
+      nuntium_host.present? && nuntium_account.present? && nuntium_app.present? && nuntium_app_password.present?
+    end
+
+    def verboice_configured?
+      verboice_host.present? && verboice_account.present? && verboice_password.present?
+    end
+
+    def twitter_configured?
+      twitter_consumer_key.present? && twitter_consumer_secret.present?
+    end
   end
 
   def self.config

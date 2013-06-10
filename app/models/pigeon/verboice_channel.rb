@@ -23,7 +23,11 @@ module Pigeon
       end
 
       def load_schemas
-        Pigeon::ChannelSchema.list_from_hash(:verboice, PigeonConfig::VerboiceChannelSchemas)
+        if Pigeon.config.verboice_configured?
+          Pigeon::ChannelSchema.list_from_hash(:verboice, PigeonConfig::VerboiceChannelSchemas)
+        else
+          []
+        end
       end
     end
 
