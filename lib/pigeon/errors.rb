@@ -7,6 +7,8 @@ module Pigeon
 
     def initialize(channel)
       @channel = channel
+      errors = @channel.errors.full_messages.join(", ")
+      super(I18n.t(:"#{@channel.class.i18n_scope}.errors.messages.channel_invalid", :errors => errors, :default => :"errors.messages.channel_invalid"))
     end
   end
 

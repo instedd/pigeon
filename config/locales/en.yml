@@ -1,0 +1,6 @@
+en:
+  pigeon:
+    errors:
+      messages:
+        channel_invalid: "Validation failed: %{errors}"
+

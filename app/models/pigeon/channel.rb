@@ -7,6 +7,10 @@ module Pigeon
     include NestedScopes
 
     class << self
+      def i18n_scope
+        :pigeon
+      end
+
       def type() nil end
 
       def schemas
