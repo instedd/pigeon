@@ -1,0 +1,71 @@
+smpp:
+  humanized_name: 'SMPP channel'
+  attributes:
+    - name: protocol
+      value: sms
+      user: false
+    - name: configuration
+      attributes:
+        - name: host
+        - name: port
+          type: integer
+        - name: user
+        - name: password
+          type: password
+        - name: system_type
+          default_value: vma
+        - name: source_ton
+        - name: source_npi
+        - name: destination_ton
+        - name: destination_npi
+        - name: service_type
+        - name: endianness_mo
+          type: boolean
+          label: 'Use little endian for UCS-2 MO messages'
+        - name: endianness_mt
+          type: boolean
+          label: 'Use little endian for UCS-2 MT messages'
+        - name: accept_mo_hex_string
+          type: boolean
+          humanized_name: 'Hex strings'
+        - name: default_mo_encoding
+          type: enum
+          options:
+            - value: 'ascii'
+              display: 'ASCII'
+            - value: 'latin1'
+              display: 'Latin1'
+            - value: 'ucs-2'
+              display: 'UCS-2'
+            - value: 'gsm'
+              display: 'GSM 03.38'
+        - name: mt_encodings
+          type: multi
+          options:
+            - value: 'ascii'
+              display: 'ASCII'
+            - value: 'latin1'
+              display: 'Latin1'
+            - value: 'ucs-2'
+              display: 'UCS-2'
+        - name: mt_max_length
+          type: enum
+          options:
+            - 140
+            - 160
+            - 254
+        - name: mt_csms_method
+          type: enum
+          options:
+            - value: 'udh'
+              display: 'UDH'
+            - value: 'optional_parameters'
+              display: 'Optional parameters'
+            - value: 'message_payload'
+              display: 'Message payload'
+          default_value: 'optional_parameters'
+        - name: suspension_codes
+          label: 'Suspension codes (comma separated)'
+        - name: rejection_codes
+          label: 'Rejection codes (comma separated)'
+

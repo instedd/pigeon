@@ -24,6 +24,12 @@ module Pigeon
           choices = choices.map { |h| [h["display"], h["value"]] }
         end
         select_tag(field_name, options_for_select(choices, field_value), options)
+      when "multi"
+        choices = attribute.options
+        if choices.length > 0 && choices[0].is_a?(Hash)
+          choices = choices.map { |h| [h["display"], h["value"]] }
+        end
+        select_tag(field_name, options_for_select(choices, field_value), { :multiple => true }.merge(options))
       when "timezone"
         select_tag(field_name, time_zone_options_for_select(field_value), options)
       when "boolean"

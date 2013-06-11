@@ -34,6 +34,9 @@ clickatell:
           type: password
           humanized_name: Incoming password
           label: Incoming password (to use for the callback URLs)
+        - name: cost_per_credit
+          label: "Cost per credit (messages will get a 'cost' custom attribute with the value charge * cost_per_credit)"
+          default_value: 1
 
 dtac:
   humanized_name: 'DTAC channel'
@@ -43,7 +46,7 @@ dtac:
       user: false
     - name: configuration
       attributes:
-        - name: username
+        - name: user
         - name: password
           type: password
 
@@ -53,14 +56,20 @@ ipop:
     - name: protocol
       value: sms
       user: false
+    - name: address
+      humanized_name: From address
+      label: 'Address (this is usually the "from" number)'
     - name: configuration
       attributes:
-        - name: url
-          label: URL
-        - name: username
+        - name: mt_post_url
+          humanized_name: Post URL
+          label: Post URL
+        - name: mt_post_user
+          humanized_name: Username
           label: Username (optional)
-        - name: password
+        - name: mt_post_password
           type: password
+          humanized_name: Password
           label: Password (optional)
         - name: cid
           label: Connection ID (cid)
@@ -85,6 +94,9 @@ isms:
     - name: protocol
       value: sms
       user: false
+    - name: address
+      humanized_name: From address
+      label: 'Address (this is usually the "from" number)'
     - name: configuration
       attributes:
         - name: host
@@ -130,28 +142,6 @@ qst:
         - name: user
         - name: password
           type: password
-
-smpp:
-  humanized_name: 'SMPP channel'
-  attributes:
-    - name: protocol
-      value: sms
-      user: false
-    - name: configuration
-      attributes:
-        - name: host
-        - name: port
-          type: integer
-        - name: user
-        - name: password
-          type: password
-        - name: system_type
-          default_value: vma
-        - name: source_ton
-        - name: source_npi
-        - name: destination_ton
-        - name: destination_npi
-        - name: service_type
 
 smtp:
   humanized_name: 'SMTP channel'
