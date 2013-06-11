@@ -88,7 +88,7 @@ msn:
         - name: password
           type: password
 
-isms:
+multimodem_isms:
   humanized_name: 'Multimodem iSms channel'
   attributes:
     - name: protocol
@@ -129,7 +129,7 @@ pop3:
         - name: remove_quoted_text_or_text_after_first_empty_line
           type: boolean
 
-qst:
+qst_client:
   humanized_name: 'QST client channel'
   attributes:
     - name: protocol
