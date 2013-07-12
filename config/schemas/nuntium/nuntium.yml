@@ -198,3 +198,30 @@ xmpp:
           type: boolean
           label: Send if user is offline
 
+shujaa:
+  humanized_name: 'Shujaa channel'
+  attributes:
+    - name: protocol
+      value: sms
+      user: false
+    - name: configuration
+      attributes:
+        - name: shujaa_url
+          default_value: http://sms.shujaa.mobi
+          label: Shujaa URL
+        - name: username
+          label: Username (your account's username or email)
+        - name: password
+          type: password
+          label: Password (your account's password)
+        - name: shujaa_account
+          type: enum
+          label: Account
+          options:
+            - value: live
+              display: Live
+            - value: developer
+              display: Developer
+    - name: address
+      label: Source (the short code or mask which will be used as the origin of this SMS)
+
