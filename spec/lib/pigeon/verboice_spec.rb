@@ -128,52 +128,52 @@ module Pigeon
     end
 
     def should_receive_http_get(path, body = nil)
-      resource = mock 'resource'
+      resource = double 'resource'
       RestClient::Resource.should_receive(:new).with(url, options).and_return(resource)
 
-      resource2 = mock 'resource2'
+      resource2 = double 'resource2'
       resource.should_receive(:[]).with(path).and_return(resource2)
 
-      resource3 = mock 'resource3'
+      resource3 = double 'resource3'
       resource2.should_receive(:get).and_return(resource3)
 
       resource3.should_receive(:body).and_return(body) if body
     end
 
     def should_receive_http_post(path, data, body)
-      resource = mock 'resource'
+      resource = double 'resource'
       RestClient::Resource.should_receive(:new).with(url, options).and_return(resource)
 
-      resource2 = mock 'resource2'
+      resource2 = double 'resource2'
       resource.should_receive(:[]).with(path).and_return(resource2)
 
-      resource3 = mock 'resource3'
+      resource3 = double 'resource3'
       resource2.should_receive(:post).with(data).and_return(resource3)
 
       resource3.stub(:body) { body }
     end
 
     def should_receive_http_put(path, data, body)
-      resource = mock 'resource'
+      resource = double 'resource'
       RestClient::Resource.should_receive(:new).with(url, options).and_return(resource)
 
-      resource2 = mock 'resource2'
+      resource2 = double 'resource2'
       resource.should_receive(:[]).with(path).and_return(resource2)
 
-      resource3 = mock 'resource3'
+      resource3 = double 'resource3'
       resource2.should_receive(:put).with(data).and_return(resource3)
 
       resource3.stub(:body) { body }
     end
 
     def should_receive_http_delete(path)
-      resource = mock 'resource'
+      resource = double 'resource'
       RestClient::Resource.should_receive(:new).with(url, options).and_return(resource)
 
-      resource2 = mock 'resource2'
+      resource2 = double 'resource2'
       resource.should_receive(:[]).with(path).and_return(resource2)
 
-      resource3 = mock 'resource3'
+      resource3 = double 'resource3'
       resource2.should_receive(:delete)
     end
   end
