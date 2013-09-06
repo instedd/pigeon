@@ -4,8 +4,14 @@ module Pigeon
     class << self
       def type() :nuntium end
 
-      def schemas
-        @schemas ||= load_schemas
+      if Rails.env.development?
+        def schemas
+          load_schemas
+        end
+      else
+        def schemas
+          @schemas ||= load_schemas
+        end
       end
 
       def list
@@ -26,7 +32,7 @@ module Pigeon
 
       def load_schemas
         if Pigeon.config.nuntium_configured?
-          Pigeon::ChannelSchema.list_from_hash(:nuntium, PigeonConfig::NuntiumChannelSchemas).reject do |schema|
+          Pigeon::ChannelSchema.list_from_hash(:nuntium, PigeonConfig.nuntium_channel_schemas).reject do |schema|
             schema.kind == 'twitter' && !Pigeon.config.twitter_configured?
           end
         else
@@ -40,7 +46,7 @@ module Pigeon
 
     validates_numericality_of :priority, only_integer: true
     validates_presence_of :protocol
-    validates_inclusion_of :direction, 
+    validates_inclusion_of :direction,
       :in => %w(incoming outgoing bidirectional),
       :message => "must be incoming, outgoing or bidirectional"
 

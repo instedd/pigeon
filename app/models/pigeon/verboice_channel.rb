@@ -4,8 +4,14 @@ module Pigeon
     class << self
       def type() :verboice end
 
-      def schemas
-        @schemas ||= load_schemas
+      if Rails.env.development?
+        def schemas
+          load_schemas
+        end
+      else
+        def schemas
+          @schemas ||= load_schemas
+        end
       end
 
       def list
@@ -24,7 +30,7 @@ module Pigeon
 
       def load_schemas
         if Pigeon.config.verboice_configured?
-          Pigeon::ChannelSchema.list_from_hash(:verboice, PigeonConfig::VerboiceChannelSchemas)
+          Pigeon::ChannelSchema.list_from_hash(:verboice, PigeonConfig::verboice_channel_schemas)
         else
           []
         end
