@@ -121,6 +121,7 @@ module Pigeon
         if %w(@template @wizard).include?(command)
           options["data-application-name"] ||= Pigeon.config.application_name
           options["data-twitter-path"] = Pigeon::Engine.routes.url_helpers.twitter_path
+          options["data-twilio-get-incoming-numbers-path"] = Pigeon::Engine.routes.url_helpers.twilio_get_incoming_phone_numbers_path
         end
 
         case command

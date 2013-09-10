@@ -14,6 +14,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'rails', '~> 3.2'
   gem.add_dependency 'twitter_oauth'
+  gem.add_dependency 'twilio-ruby'
   gem.add_dependency 'rest-client'
   gem.add_dependency 'json'
 

@@ -1,0 +1,49 @@
+twilio:
+  humanized_name: 'Twilio channel'
+  attributes:
+    - name: protocol
+      value: sms
+      user: false
+    - name: configuration
+      attributes:
+        - name: account_sid
+        - name: auth_token
+        - name: from
+        - name: incoming_password
+          type: password
+          label: Incoming password (to use for the callback URLs)
+  template:
+    - "@template"
+    - type: twilio
+    -
+      - div
+      - "Open your "
+      -
+        - a
+        - href: https://www.twilio.com/
+        - Twilio
+      - " account and copy/paste your AccountSID and AuthToken. You will find that information on the top of the Dashboard page."
+    -
+      - "@attr"
+      - configuration[account_sid]
+    -
+      - "@attr"
+      - configuration[auth_token]
+    -
+      - div
+      - id: twilio-feedback-div
+        style: "display:none"
+      -
+        - p
+        - "Fetching phone numbers from your account, please wait..."
+    -
+      - div
+      - id: twilio-phone-number-div
+        style: "display:none"
+      -
+        - p
+        - "Select a phone number to use for this channel:"
+      -
+        - select
+        - id: twilio-phone-number
+          name: "channel_data[configuration][from]"

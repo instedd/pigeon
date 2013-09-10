@@ -161,21 +161,6 @@ smtp:
           type: boolean
           label: "Use SSL?"
 
-twilio:
-  humanized_name: 'Twilio channel'
-  attributes:
-    - name: protocol
-      value: sms
-      user: false
-    - name: configuration
-      attributes:
-        - name: account_sid
-        - name: auth_token
-        - name: from
-        - name: incoming_password
-          type: password
-          label: Incoming password (to use for the callback URLs)
-
 xmpp:
   humanized_name: 'XMPP channel'
   attributes:
