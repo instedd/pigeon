@@ -33,6 +33,8 @@ module PigeonConfig
     def self.verboice_channel_schemas
       @@verboice_channel_schemas
     end
+
+    reload_schemas()
   end
 end
 
