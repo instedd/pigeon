@@ -28,7 +28,7 @@ class TwilioTemplate extends PigeonTemplate
               phone_select = $('#twilio-phone-number')
               options = ""
               for phone in @phone_numbers
-                options += "<option name=\"#{phone.phone_number}\">#{phone.friendly_name}</option>"
+                options += "<option value=\"#{phone.phone_number}\">#{phone.friendly_name}</option>"
               phone_select.html(options)
 
               phones_div.show()
