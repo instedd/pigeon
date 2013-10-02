@@ -48,7 +48,7 @@ and to `app/assets/stylesheets/application.css`
     *= require pigeon
     */
 
-If you need to support Nuntium Twitter channels, mount the Pigeon engine by
+If you need to support Nuntium Twitter or Twilio channels, mount the Pigeon engine by
 adding to your `routes.rb`
 
     mount Pigeon::Engine => '/pigeon'
