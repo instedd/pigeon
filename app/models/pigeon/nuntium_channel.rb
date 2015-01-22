@@ -58,8 +58,7 @@ module Pigeon
           self.class.nuntium.create_channel attributes
           @persisted = true
         else
-          self.class.nuntium.delete_channel name
-          self.class.nuntium.create_channel attributes
+          self.class.nuntium.update_channel attributes
         end
         true
       rescue Pigeon::NuntiumException => e
