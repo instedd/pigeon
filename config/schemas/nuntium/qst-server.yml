@@ -95,7 +95,9 @@ qst_server:
         - src: pigeon/android_local_gateway_qr.png
       -
         - a
-        - href: market.android.com/details?id=org.instedd.geochat.lgw
+        -
+          href: http://market.android.com/details?id=org.instedd.geochat.lgw
+          target: _blank
         - market.android.com/details?id=org.instedd.geochat.lgw
     -
       - "@page"
@@ -148,7 +150,7 @@ qst_server:
           - li
           -
             - a
-            - href: https://bitbucket.org/instedd/local-gateway/downloads/LocalGateway.exe
+            - href: https://bitbucket.org/instedd/local-gateway/downloads/LocalGateway.deb
             - Download for Ubuntu
       -
         - p
