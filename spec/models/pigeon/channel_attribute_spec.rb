@@ -3,95 +3,95 @@ require 'spec_helper'
 module Pigeon
   describe ChannelAttribute do
     it "should require a name" do
-      lambda { ChannelAttribute.new nil, 'bar' }.should raise_error(ArgumentError)
-      lambda { ChannelAttribute.new '', 'bar' }.should raise_error(ArgumentError)
+      expect { ChannelAttribute.new nil, 'bar' }.to raise_error(ArgumentError)
+      expect { ChannelAttribute.new '', 'bar' }.to raise_error(ArgumentError)
     end
 
     it "should require a type" do
-      lambda { ChannelAttribute.new 'foo', nil }.should raise_error(ArgumentError)
+      expect { ChannelAttribute.new 'foo', nil }.to raise_error(ArgumentError)
     end
 
     it "should validate type" do
-      lambda { ChannelAttribute.new 'foo', 'bar' }.should raise_error(ArgumentError)
+      expect { ChannelAttribute.new 'foo', 'bar' }.to raise_error(ArgumentError)
     end
 
     it "should set label and humanized name by default" do
       @attr = ChannelAttribute.new 'foo', :string
-      @attr.label.should_not be_blank
-      @attr.humanized_name.should_not be_blank
+      expect(@attr.label).not_to be_blank
+      expect(@attr.humanized_name).not_to be_blank
     end
 
     it "should humanize label and humanized name by default" do
       @attr = ChannelAttribute.new 'some_field', :string
-      @attr.label.should eq('Some field')
-      @attr.humanized_name.should eq('Some field')
+      expect(@attr.label).to eq('Some field')
+      expect(@attr.humanized_name).to eq('Some field')
     end
 
     it "should set label from humanized name if not given" do
       @attr = ChannelAttribute.new 'foo', :string, humanized_name: 'bar'
-      @attr.label.should eq('bar')
-      @attr.humanized_name.should eq('bar')
+      expect(@attr.label).to eq('bar')
+      expect(@attr.humanized_name).to eq('bar')
     end
 
     it "should set humanized name from label if not given" do
       @attr = ChannelAttribute.new 'foo', :string, label: 'bar'
-      @attr.label.should eq('bar')
-      @attr.humanized_name.should eq('bar')
+      expect(@attr.label).to eq('bar')
+      expect(@attr.humanized_name).to eq('bar')
     end
 
     it "should initialize options to empty array" do
       @attr = ChannelAttribute.new 'foo', :enum
-      @attr.options.should_not be_nil
+      expect(@attr.options).not_to be_nil
     end
 
     it "should have a scope" do
       @attr = ChannelAttribute.new 'foo', :string
-      @attr.should respond_to(:scope)
-      @attr.should respond_to(:scope=)
+      expect(@attr).to respond_to(:scope)
+      expect(@attr).to respond_to(:scope=)
     end
 
     it "should compute its scoped name" do
       @foo = ChannelAttribute.new 'foo', :string
       @bar = ChannelAttribute.new 'bar', :string
       
-      @bar.scoped_name.should eq('bar')
-      @bar.scoped_name('bling').should eq('bling[bar]')
+      expect(@bar.scoped_name).to eq('bar')
+      expect(@bar.scoped_name('bling')).to eq('bling[bar]')
 
       @bar.scope = @foo
-      @bar.scoped_name.should eq('foo[bar]')
-      @bar.scoped_name('bling').should eq('bling[foo][bar]')
+      expect(@bar.scoped_name).to eq('foo[bar]')
+      expect(@bar.scoped_name('bling')).to eq('bling[foo][bar]')
     end
 
     describe "build_default" do
       it "should create a valid string attribute by default" do
         attr = ChannelAttribute.build_default('foo')
-        attr.should_not be_nil
-        attr.should be_a(ChannelAttribute)
-        attr.type.should eq(:string)
-        attr.name.should eq('foo')
+        expect(attr).not_to be_nil
+        expect(attr).to be_a(ChannelAttribute)
+        expect(attr.type).to eq(:string)
+        expect(attr.name).to eq('foo')
       end
 
       it "should create a boolean attribute if the value is boolean" do
-        ChannelAttribute.build_default('foo', true).type.should eq(:boolean)
-        ChannelAttribute.build_default('foo', false).type.should eq(:boolean)
+        expect(ChannelAttribute.build_default('foo', true).type).to eq(:boolean)
+        expect(ChannelAttribute.build_default('foo', false).type).to eq(:boolean)
       end
 
       it "should create an integer attribute if the value is an integer number" do
-        ChannelAttribute.build_default('foo', 10).type.should eq(:integer)
+        expect(ChannelAttribute.build_default('foo', 10).type).to eq(:integer)
       end
 
       it "should build a scope if the attribute name is scoped" do
         attr = ChannelAttribute.build_default('foo[bar]')
-        attr.name.should eq('bar')
-        attr.scoped_name.should eq('foo[bar]')
-        attr.scoped_name('baz').should eq('baz[foo][bar]')
+        expect(attr.name).to eq('bar')
+        expect(attr.scoped_name).to eq('foo[bar]')
+        expect(attr.scoped_name('baz')).to eq('baz[foo][bar]')
       end
 
       it "should build a recursive scope if the attribute name is deeply nested" do
         attr = ChannelAttribute.build_default('baz[foo][bar]')
-        attr.name.should eq('bar')
-        attr.scoped_name.should eq('baz[foo][bar]')
-        attr.scoped_name('outer').should eq('outer[baz][foo][bar]')
+        expect(attr.name).to eq('bar')
+        expect(attr.scoped_name).to eq('baz[foo][bar]')
+        expect(attr.scoped_name('outer')).to eq('outer[baz][foo][bar]')
       end
     end
   end

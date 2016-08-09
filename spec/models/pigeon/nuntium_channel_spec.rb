@@ -8,27 +8,27 @@ module Pigeon
       end
 
       it "should be of nuntium type" do
-        @channel.type.should be(:nuntium)
+        expect(@channel.type).to be(:nuntium)
       end
 
       [:protocol, :enabled, :direction, :priority].each do |attr|
         it "should respond to #{attr} methods" do
-          @channel.should respond_to(attr)
-          @channel.should respond_to("#{attr}=")
+          expect(@channel).to respond_to(attr)
+          expect(@channel).to respond_to("#{attr}=")
         end
       end
 
       it "should have default values" do
-        @channel.protocol.should_not be_nil
-        @channel.enabled.should be_true
-        @channel.direction.should eq("bidirectional")
-        @channel.priority.should eq(100)
+        expect(@channel.protocol).not_to be_nil
+        expect(@channel.enabled).to be_truthy
+        expect(@channel.direction).to eq("bidirectional")
+        expect(@channel.priority).to eq(100)
       end
     end
 
     it "should load static schemas" do
-      NuntiumChannel.schemas.should_not be_empty
-      NuntiumChannel.find_schema('pop3').should_not be_nil
+      expect(NuntiumChannel.schemas).not_to be_empty
+      expect(NuntiumChannel.find_schema('pop3')).not_to be_nil
     end
 
     describe "when initialized with kind" do
@@ -37,15 +37,15 @@ module Pigeon
       end
 
       it "should find schema" do
-        @channel.schema.should_not be_nil
+        expect(@channel.schema).not_to be_nil
       end
 
       it "should set schema's default values" do
-        @channel.protocol.should eq('xmpp')
+        expect(@channel.protocol).to eq('xmpp')
       end
 
       it "should set nested default schema values" do
-        @channel.configuration['port'].should eq(5222)
+        expect(@channel.configuration['port']).to eq(5222)
       end
     end
   end

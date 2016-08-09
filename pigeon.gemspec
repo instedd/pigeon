@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{This gem handles creating, updating and destroying channels in Nuntium and Verboice for your Rails application.}
   gem.homepage      = "https://bitbucket.org/instedd/pigeon"
 
-  gem.add_dependency 'rails', '~> 3.2'
+  gem.add_dependency 'rails', '> 3.2'
   gem.add_dependency 'twitter_oauth'
   gem.add_dependency 'twilio-ruby'
   gem.add_dependency 'rest-client'

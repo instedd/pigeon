@@ -8,71 +8,71 @@ module Pigeon
       end
 
       it "should render an empty vector" do
-        @renderer.render([]).should eq('')
+        expect(@renderer.render([])).to eq('')
       end
 
       it "should render empty tags" do
-        @renderer.render(["p"]).should eq("<p></p>")
-        @renderer.render(["br"]).should eq("<br />")
+        expect(@renderer.render(["p"])).to eq("<p></p>")
+        expect(@renderer.render(["br"])).to eq("<br />")
       end
 
       it "should render tags with content text" do
-        @renderer.render(["h1", "Title"]).should eq("<h1>Title</h1>")
-        @renderer.render(["h2", "Hello", "World"]).
-          should eq("<h2>HelloWorld</h2>")
+        expect(@renderer.render(["h1", "Title"])).to eq("<h1>Title</h1>")
+        expect(@renderer.render(["h2", "Hello", "World"])).
+          to eq("<h2>HelloWorld</h2>")
       end
 
       it "should optionally accept an attributes hash" do
-        @renderer.render(["span", { :class => 'foo' }, "with class foo"]).
-          should eq("<span class=\"foo\">with class foo</span>")
-        @renderer.render(["p", { :class => 'bar' }]).
-          should eq("<p class=\"bar\"></p>")
-        @renderer.render(["hr", { :class => 'bar' }]).
-          should eq("<hr class=\"bar\" />")
+        expect(@renderer.render(["span", { :class => 'foo' }, "with class foo"])).
+          to eq("<span class=\"foo\">with class foo</span>")
+        expect(@renderer.render(["p", { :class => 'bar' }])).
+          to eq("<p class=\"bar\"></p>")
+        expect(@renderer.render(["hr", { :class => 'bar' }])).
+          to eq("<hr class=\"bar\" />")
       end
 
       it "should recursively render content elements" do
-        @renderer.render(["div", ["h1", "Title"], ["p", "Foo", ["br"], "Bar"]]).
-          should eq("<div><h1>Title</h1><p>Foo<br />Bar</p></div>")
+        expect(@renderer.render(["div", ["h1", "Title"], ["p", "Foo", ["br"], "Bar"]])).
+          to eq("<div><h1>Title</h1><p>Foo<br />Bar</p></div>")
       end
 
       it "should parse tag name to produce element IDs" do
-        @renderer.render(["div#foo"]).should eq("<div id=\"foo\"></div>")
+        expect(@renderer.render(["div#foo"])).to eq("<div id=\"foo\"></div>")
       end
 
       it "should parse tag name to produce classes" do
-        @renderer.render(["div.foo"]).should eq("<div class=\"foo\"></div>")
-        @renderer.render(["div.foo.bar"]).
-          should eq("<div class=\"foo bar\"></div>")
+        expect(@renderer.render(["div.foo"])).to eq("<div class=\"foo\"></div>")
+        expect(@renderer.render(["div.foo.bar"])).
+          to eq("<div class=\"foo bar\"></div>")
       end
 
       it "should accept IDs and classes simultaneously and in any order" do
-        @renderer.render(["div#foo.bar.baz"]).
-          should eq("<div class=\"bar baz\" id=\"foo\"></div>")
-        @renderer.render(["div.bar#foo.baz"]).
-          should eq("<div class=\"bar baz\" id=\"foo\"></div>")
-        @renderer.render(["div.bar.baz#foo"]).
-          should eq("<div class=\"bar baz\" id=\"foo\"></div>")
+        expect(@renderer.render(["div#foo.bar.baz"])).
+          to match(/<div (?=.*id="foo")(?=.*class="bar baz").*/)
+        expect(@renderer.render(["div.bar#foo.baz"])).
+          to match(/<div (?=.*id="foo")(?=.*class="bar baz").*/)
+        expect(@renderer.render(["div.bar.baz#foo"])).
+          to match(/<div (?=.*id="foo")(?=.*class="bar baz").*/)
       end
 
       it "should render DIVs by default" do
-        @renderer.render(["#foo"]).should eq("<div id=\"foo\"></div>")
-        @renderer.render([".foo"]).should eq("<div class=\"foo\"></div>")
+        expect(@renderer.render(["#foo"])).to eq("<div id=\"foo\"></div>")
+        expect(@renderer.render([".foo"])).to eq("<div class=\"foo\"></div>")
       end
 
       it "should merge options from the tag and the given hash" do
-        @renderer.render(["#foo", { :class => "bar" }]).
-          should eq("<div class=\"bar\" id=\"foo\"></div>")
-        @renderer.render([".foo", { :id => "bar" }]).
-          should eq("<div class=\"foo\" id=\"bar\"></div>")
-        @renderer.render([".foo", { :class => "bar" }]).
-          should eq("<div class=\"foo bar\"></div>")
-        @renderer.render(["#foo", { :id => "bar" }]).
-          should eq("<div id=\"foo\"></div>")
+        expect(@renderer.render(["#foo", { :class => "bar" }])).
+          to match(/<div (?=.*id="foo")(?=.*class="bar").*/)
+        expect(@renderer.render([".foo", { :id => "bar" }])).
+          to match(/<div (?=.*class="foo")(?=.*id="bar").*/)
+        expect(@renderer.render([".foo", { :class => "bar" }])).
+          to match(/<div (?=.*class="foo bar").*/)
+        expect(@renderer.render(["#foo", { :id => "bar" }])).
+          to match(/<div (?=.*id="foo").*/)
       end
 
       it "should not render unknown at-commands by default" do
-        @renderer.render(["@x", "foo"]).should eq('')
+        expect(@renderer.render(["@x", "foo"])).to eq('')
       end
 
       it "should delegate at-command rendering" do
@@ -83,25 +83,25 @@ module Pigeon
         end
 
         @renderer = TestRenderer.new
-        @renderer.render(["@x", "foo"]).should eq('@xfoo')
+        expect(@renderer.render(["@x", "foo"])).to eq('@xfoo')
       end
 
       it "should escape HTML entities by default" do
-        @renderer.render(["h1", "<b>foo</b>"]).should_not have_tag('b')
+        expect(@renderer.render(["h1", "<b>foo</b>"])).not_to have_tag('b')
       end
 
       it "should accept @raw command and not escape entities" do
-        @renderer.render(["@raw", "<b>foo</b>"]).should have_tag('b')
+        expect(@renderer.render(["@raw", "<b>foo</b>"])).to have_tag('b')
       end
 
       it "should accept @template, @wizard and @page commands" do
-        @renderer.render(["@template"]).should have_tag('div', with: { 'class' => 'pigeon pigeon_template' })
-        @renderer.render(["@wizard"]).should have_tag('div', with: { 'class' => 'pigeon pigeon_wizard' })
-        @renderer.render(["@page"]).should have_tag('div', with: { 'class' => 'pigeon_wizard_page' })
+        expect(@renderer.render(["@template"])).to have_tag('div', with: { 'class' => 'pigeon pigeon_template' })
+        expect(@renderer.render(["@wizard"])).to have_tag('div', with: { 'class' => 'pigeon pigeon_wizard' })
+        expect(@renderer.render(["@page"])).to have_tag('div', with: { 'class' => 'pigeon_wizard_page' })
       end
 
       it "should prefix custom options with 'data-' in template commands" do
-        @renderer.render(["@template", { "foo" => 42 }]).should have_tag('div', with: { "data-foo" => 42 })
+        expect(@renderer.render(["@template", { "foo" => 42 }])).to have_tag('div', with: { "data-foo" => 42 })
       end
     end
   end

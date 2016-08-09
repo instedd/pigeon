@@ -1,8 +1,12 @@
 module Pigeon
   module Renderer
     class Base
-      include Sprockets::Helpers::RailsHelper
-      include Sprockets::Helpers::IsolatedHelper
+      if Rails::VERSION::MAJOR == 3
+        include Sprockets::Helpers::RailsHelper
+        include Sprockets::Helpers::IsolatedHelper
+      elsif Rails::VERSION::MAJOR == 5
+        include Sprockets::Rails::Helper
+      end
       include ActionView::Helpers::OutputSafetyHelper
       include ActionView::Helpers::TextHelper
       include ActionView::Helpers::TagHelper

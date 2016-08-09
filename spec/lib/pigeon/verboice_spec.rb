@@ -10,29 +10,29 @@ module Pigeon
     it "calls by channel and address" do
       should_receive_http_get "/api/call?#{api.to_query :channel => 'channel', :address => 'foo'}", '{"call_id": 1, "state": "active"}'
       call = api.call 'foo', :channel => 'channel'
-      call['call_id'].should eq(1)
-      call['state'].should eq('active')
+      expect(call['call_id']).to eq(1)
+      expect(call['state']).to eq('active')
     end
 
     it "calls by address with default channel" do
       should_receive_http_get "/api/call?#{api.to_query :channel => 'default_channel', :address => 'foo'}", '{"call_id": 1, "state": "active"}'
       call = api.call 'foo'
-      call['call_id'].should eq(1)
-      call['state'].should eq('active')
+      expect(call['call_id']).to eq(1)
+      expect(call['state']).to eq('active')
     end
 
     it "calls by address and custom callback address" do
       should_receive_http_get "/api/call?#{api.to_query :channel => 'channel', :address => 'foo', :callback_url => 'http://foo.com'}", '{"call_id": 1, "state": "active"}'
       call = api.call 'foo', :channel => 'channel', :callback_url => 'http://foo.com'
-      call['call_id'].should eq(1)
-      call['state'].should eq('active')
+      expect(call['call_id']).to eq(1)
+      expect(call['state']).to eq('active')
     end
 
     it "calls by address and custom flow" do
       should_receive_http_post "/api/call?#{api.to_query :channel => 'channel', :address => 'foo'}", '<Response/>', '{"call_id": 1, "state": "active"}'
       call = api.call 'foo', :channel => 'channel', :flow => '<Response/>'
-      call['call_id'].should eq(1)
-      call['state'].should eq('active')
+      expect(call['call_id']).to eq(1)
+      expect(call['state']).to eq('active')
     end
 
     it "calls by using a queue" do
@@ -55,8 +55,8 @@ module Pigeon
     it "queries call state by id" do
       should_receive_http_get "/api/calls/1/state", '{"call_id": 1, "state": "active"}'
       call = api.call_state 1
-      call['call_id'].should eq(1)
-      call['state'].should eq('active')
+      expect(call['call_id']).to eq(1)
+      expect(call['state']).to eq('active')
     end
 
     it "gets channel by name" do
@@ -66,7 +66,7 @@ module Pigeon
       should_receive_http_get '/api/channels/foo.json', channel_json
 
       result = api.channel 'foo'
-      result.should eq(channel)
+      expect(result).to eq(channel)
     end
 
     it "creates channel" do
@@ -75,7 +75,7 @@ module Pigeon
       should_receive_http_post '/api/channels.json', channel_json, channel_json
 
       result = api.create_channel channel
-      result.should eq(channel)
+      expect(result).to eq(channel)
     end
 
     it "updates channel" do
@@ -84,7 +84,7 @@ module Pigeon
       should_receive_http_put '/api/channels/foo.json', channel_json, channel_json
 
       result = api.update_channel channel
-      result.should eq(channel)
+      expect(result).to eq(channel)
     end
 
     it "deletes channel", :focus => true do
@@ -96,14 +96,14 @@ module Pigeon
     it "lists call queues" do
       should_receive_http_get '/api/projects/2/schedules.json', '[{"name":"foo"},{"name":"bar"}]'
       schedules = api.schedules 2
-      schedules.should have(2).items
-      schedules[0]["name"].should eq('foo')
-      schedules[1]["name"].should eq('bar')
+      expect(schedules.size).to eq(2)
+      expect(schedules[0]["name"]).to eq('foo')
+      expect(schedules[1]["name"]).to eq('bar')
     end
 
     it "gets a call queue by name" do
       should_receive_http_get '/api/projects/2/schedules/foo.json', schedule.to_json
-      api.schedule(2, schedule["name"]).should eq(schedule)
+      expect(api.schedule(2, schedule["name"])).to eq(schedule)
     end
 
     it "creates a call queue" do
@@ -124,57 +124,57 @@ module Pigeon
     it "lists channels" do
       should_receive_http_get '/api/channels.json', '["foo", "bar", "baz"]'
       list = api.list_channels
-      list.should == ['foo', 'bar', 'baz']
+      expect(list).to eq(['foo', 'bar', 'baz'])
     end
 
     def should_receive_http_get(path, body = nil)
       resource = double 'resource'
-      RestClient::Resource.should_receive(:new).with(url, options).and_return(resource)
+      expect(RestClient::Resource).to receive(:new).with(url, options).and_return(resource)
 
       resource2 = double 'resource2'
-      resource.should_receive(:[]).with(path).and_return(resource2)
+      expect(resource).to receive(:[]).with(path).and_return(resource2)
 
       resource3 = double 'resource3'
-      resource2.should_receive(:get).and_return(resource3)
+      expect(resource2).to receive(:get).and_return(resource3)
 
-      resource3.should_receive(:body).and_return(body) if body
+      expect(resource3).to receive(:body).and_return(body) if body
     end
 
     def should_receive_http_post(path, data, body)
       resource = double 'resource'
-      RestClient::Resource.should_receive(:new).with(url, options).and_return(resource)
+      expect(RestClient::Resource).to receive(:new).with(url, options).and_return(resource)
 
       resource2 = double 'resource2'
-      resource.should_receive(:[]).with(path).and_return(resource2)
+      expect(resource).to receive(:[]).with(path).and_return(resource2)
 
       resource3 = double 'resource3'
-      resource2.should_receive(:post).with(data).and_return(resource3)
+      expect(resource2).to receive(:post).with(data).and_return(resource3)
 
-      resource3.stub(:body) { body }
+      allow(resource3).to receive(:body) { body }
     end
 
     def should_receive_http_put(path, data, body)
       resource = double 'resource'
-      RestClient::Resource.should_receive(:new).with(url, options).and_return(resource)
+      expect(RestClient::Resource).to receive(:new).with(url, options).and_return(resource)
 
       resource2 = double 'resource2'
-      resource.should_receive(:[]).with(path).and_return(resource2)
+      expect(resource).to receive(:[]).with(path).and_return(resource2)
 
       resource3 = double 'resource3'
-      resource2.should_receive(:put).with(data).and_return(resource3)
+      expect(resource2).to receive(:put).with(data).and_return(resource3)
 
-      resource3.stub(:body) { body }
+      allow(resource3).to receive(:body) { body }
     end
 
     def should_receive_http_delete(path)
       resource = double 'resource'
-      RestClient::Resource.should_receive(:new).with(url, options).and_return(resource)
+      expect(RestClient::Resource).to receive(:new).with(url, options).and_return(resource)
 
       resource2 = double 'resource2'
-      resource.should_receive(:[]).with(path).and_return(resource2)
+      expect(resource).to receive(:[]).with(path).and_return(resource2)
 
       resource3 = double 'resource3'
-      resource2.should_receive(:delete)
+      expect(resource2).to receive(:delete)
     end
   end
 end

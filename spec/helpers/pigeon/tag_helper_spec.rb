@@ -19,17 +19,17 @@ module Pigeon
 
       it "returns a list of schemas appropiate for options_for_select" do
         options = helper.pigeon_schema_options(@schemas)
-        options.count.should eq(@schemas.count)
-        options.all? { |o| 
+        expect(options.count).to eq(@schemas.count)
+        expect(options.all? { |o| 
           o.respond_to?(:first) && o.respond_to?(:last) 
-        }.should be_true
+        }).to be_truthy
       end
 
       it "prefixes values with given string" do
         options = helper.pigeon_schema_options(@schemas, 'foo/')
-        options.all? { |o|
+        expect(options.all? { |o|
           o.last.starts_with? 'foo/'
-        }.should be_true
+        }).to be_truthy
       end
     end
   end
